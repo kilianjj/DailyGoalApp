@@ -1,22 +1,23 @@
+import 'package:daily_goal_app/pages/home_page.dart';
 import 'package:flutter/material.dart';
+// import hive
+// import pages
 
+
+// make async 
 void main() {
-  runApp(const MyApp());
+  runApp(const GoalApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class GoalApp extends StatelessWidget {
+  const GoalApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Daily Goal App',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
-        useMaterial3: true,
-      ),
-      home: const Scaffold(backgroundColor: Colors.white,),
+      home: HomePage()
     );
   }
 }
