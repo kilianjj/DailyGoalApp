@@ -1,5 +1,5 @@
-import 'package:daily_goal_app/util/goal_tile.dart';
 import 'package:daily_goal_app/util/database.dart';
+import 'package:daily_goal_app/util/goal_tile.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -26,9 +26,11 @@ class _HomePageState extends State<HomePage> {
           child: Icon(Icons.add),
         ),
         body: ListView.builder(
-            itemCount: goals.length,
-            itemBuilder: (context, index) {
-              return GoalTile(goal: goals[index]);
-            }));
+                itemCount: nonListGoals.length,
+                itemBuilder: (context, index) {
+                  return GoalTile(goal: nonListGoals[index]);
+                }
+              )
+    );
   }
 }
