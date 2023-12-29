@@ -40,7 +40,6 @@ class _DropdownState extends State<Dropdown> {
       goals.add(newGoal);
       CONTROLLER.clear();
       Navigator.of(context).pop(); // close dialoug box
-      print(goals);
       widget.onGoalsUpdated();
     });
   }
@@ -90,10 +89,5 @@ class _DropdownState extends State<Dropdown> {
         ),
       ],
     );
-  }
-
-  void myOnPressedFunction(String selectedValue) {
-    // Your logic using the selected value
-    print('Button pressed with selected value: $selectedValue');
   }
 }

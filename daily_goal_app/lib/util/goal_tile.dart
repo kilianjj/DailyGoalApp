@@ -15,25 +15,24 @@ class Goal {
   TimeOfDay checkTime;
   DateTime lastComplete;
 
-  Goal({required this.task,
-        required this.lastComplete,
-        this.frequency = RepeatFrequency.daily,
-        this.checkTime = const TimeOfDay(hour: 0, minute: 0),
-        this.streak = 0, 
-        });
+  Goal({
+    required this.task,
+    required this.lastComplete,
+    this.frequency = RepeatFrequency.daily,
+    this.checkTime = const TimeOfDay(hour: 0, minute: 0),
+    this.streak = 0,
+  });
 }
 
 // UI goal element
 class GoalTile extends StatelessWidget {
   // goal attributes
   Goal goal;
-  //Function(bool?)? checked;
-  //Function(BuildContext)? delete;
+  Function(bool?)? checked;
+  Function(BuildContext)? delete;
+  Function(BuildContext)? edit;
 
-  GoalTile({super.key, required this.goal
-      //this.checked = null;
-      //required this.delete
-      });
+  GoalTile({super.key, required this.goal, required this.delete, required this.edit});
 
   @override
   Widget build(BuildContext context) {
@@ -44,12 +43,12 @@ class GoalTile extends StatelessWidget {
               motion: const StretchMotion(),
               children: [
                 SlidableAction(
-                    onPressed: null,
+                    onPressed: edit,
                     icon: Icons.edit,
                     backgroundColor: Color.fromARGB(255, 206, 204, 204),
                     borderRadius: BorderRadius.circular(5)),
                 SlidableAction(
-                    onPressed: null,
+                    onPressed: delete,
                     icon: Icons.delete,
                     backgroundColor: Colors.red,
                     borderRadius: BorderRadius.circular(5))

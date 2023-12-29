@@ -1,4 +1,5 @@
 // class for buttons and helper functions
+import 'package:daily_goal_app/util/goal_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:gradient_icon/gradient_icon.dart';
 
@@ -17,7 +18,8 @@ class _FireButtonState extends State<FireButton> {
     return InkResponse(
         onTap: () {
           setState(() {
-            isClicked = !isClicked; // add function to update streak
+            isClicked = !isClicked; 
+            // Goal g = goals[]
           });
         },
         child: Container(
@@ -36,20 +38,3 @@ class _FireButtonState extends State<FireButton> {
                 size: 36.0, color: Colors.white)));
   }
 }
-
-// /// Class for Save and Cancel buttons used in add-task dialoug box
-// class Button extends StatelessWidget {
-
-//   // Button text and function called when pressed
-//   final String text;
-//   final VoidCallback onPressed;
-
-//   const Button({super.key, required this.text, required this.onPressed});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialButton(onPressed: onPressed, 
-//     color: Theme.of(context).primaryColorDark,
-//     child: Text(text));
-//   }
-// }

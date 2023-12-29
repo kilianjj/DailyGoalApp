@@ -18,10 +18,21 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   // do Hive stuff
 
-  void update(){
+  void update() {
+    setState(() {});
+  }
+
+  void deleteGoal(int index) {
     setState(() {
-      
+      goals.removeAt(index);
     });
+    update();
+  }
+
+  void editGoal(int index) {
+    CONTROLLER.text = goals[index].task;
+    deleteGoal(index);
+    addGoal();
   }
 
   // function for adding a new goal
@@ -29,8 +40,7 @@ class _HomePageState extends State<HomePage> {
     showDialog(
         context: context,
         builder: (context) {
-          return DialogBox(
-              controller: CONTROLLER, onGoalsUpdated: update);
+          return DialogBox(controller: CONTROLLER, onGoalsUpdated: update);
         });
     // db.updateData();
   }
@@ -52,7 +62,10 @@ class _HomePageState extends State<HomePage> {
         body: ListView.builder(
             itemCount: goals.length,
             itemBuilder: (context, index) {
-              return GoalTile(goal: goals[index]);
+              return GoalTile(
+                  goal: goals[index],
+                  delete: (context) => deleteGoal(index),
+                  edit: (context) => editGoal(index));
             }));
   }
 }
