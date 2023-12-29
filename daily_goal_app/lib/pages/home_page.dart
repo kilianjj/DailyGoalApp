@@ -26,9 +26,9 @@ class _HomePageState extends State<HomePage> {
           child: Icon(Icons.add),
         ),
         body: ListView.builder(
-                itemCount: nonListGoals.length,
+                itemCount: goals.length,
                 itemBuilder: (context, index) {
-                  return GoalTile(goal: nonListGoals[index]);
+                  return GoalTile(goal: goals[index]);
                 }
               )
     );

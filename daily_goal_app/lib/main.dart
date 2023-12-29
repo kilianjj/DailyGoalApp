@@ -13,7 +13,7 @@ class GoalApp extends StatelessWidget {
   const GoalApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  MaterialApp build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Daily Goal App',

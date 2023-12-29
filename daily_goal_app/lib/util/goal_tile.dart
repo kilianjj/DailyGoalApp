@@ -1,17 +1,29 @@
+// Has all goal class and UI goal tile code
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:daily_goal_app/util/button.dart';
 
-enum RepeatDuration { daily, weekly, monthly, yearly }
+// goal repeat frequency options
+enum RepeatFrequency { daily, weekly, monthly, yearly }
 
+/// Goal class
+/// Constatins task name, time of day to check for streak, etc
 class Goal {
-  String name;
+  String task;
   int streak;
-  RepeatDuration duration;
+  RepeatFrequency frequency;
+  TimeOfDay checkTime;
+  DateTime lastComplete;
 
-  Goal({required this.name, required this.streak, required this.duration});
+  Goal({required this.task,
+        required this.lastComplete,
+        this.frequency = RepeatFrequency.daily,
+        this.checkTime = const TimeOfDay(hour: 0, minute: 0),
+        this.streak = 0, 
+        });
 }
 
+// UI goal element
 class GoalTile extends StatelessWidget {
   // goal attributes
   Goal goal;
@@ -51,15 +63,14 @@ class GoalTile extends StatelessWidget {
                 child: Row(children: [
                   Padding(
                       padding: const EdgeInsets.all(10.0),
-                      child: 
-                            Text(goal.name,
-                              style: const TextStyle(
+                      child: Text(goal.task,
+                          style: const TextStyle(
                               fontSize: 20, color: Colors.white))),
-                            const Padding(padding: EdgeInsets.all(5)),
-                            Text(goal.streak.toString(), 
-                               style: const TextStyle(
-                              fontSize: 20, color: Colors.white)),
-                            FireButton()
+                  const Padding(padding: EdgeInsets.all(5)),
+                  Text(goal.streak.toString(),
+                      style:
+                          const TextStyle(fontSize: 20, color: Colors.white)),
+                  FireButton()
                 ]))));
   }
 }
