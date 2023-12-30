@@ -3,26 +3,29 @@ import 'package:daily_goal_app/pages/home_page.dart';
 import 'package:daily_goal_app/util/goal_tile.dart';
 import 'package:daily_goal_app/util/database.dart';
 
+/// dropdown class
 class Dropdown extends StatefulWidget {
-  // final Function(List<Goal>) onGoalsUpdated;
   final VoidCallback onGoalsUpdated;
   Dropdown({required this.onGoalsUpdated});
-
   @override
   _DropdownState createState() => _DropdownState();
 }
 
+/// dropdown state for adding/editing goals
 class _DropdownState extends State<Dropdown> {
-  String selectedValue = 'Daily'; // Holds the selected value
 
+  /// holds the selected dropbox item
+  String selectedValue = 'Daily'; 
+  /// dropdown options corresponding to goal frequencies
   List<String> dropdownItems = ['Daily', 'Weekly', 'Monthly', 'Yearly'];
 
+  /// clear the text controller and pop back the dialoug box to go to home page
   void cancel() {
-    CONTROLLER.clear();
-    Navigator.of(context).pop(); // close dialoug box
+    controller.clear();
+    Navigator.of(context).pop(); 
   }
 
-  // save a goal
+  /// save a new goal based on dialoug box entries
   void save(String freq) {
     setState(() {
       RepeatFrequency f = RepeatFrequency.daily;
@@ -35,15 +38,18 @@ class _DropdownState extends State<Dropdown> {
       if (freq == "Yearly") {
         f = RepeatFrequency.yearly;
       }
+      // new goal object
       Goal newGoal = Goal(
-          task: CONTROLLER.text, lastComplete: DateTime.now(), frequency: f);
+          task: controller.text, lastComplete: DateTime.now(), frequency: f);
       goals.add(newGoal);
-      CONTROLLER.clear();
-      Navigator.of(context).pop(); // close dialoug box
+      controller.clear();
+      // close dialoug box
+      Navigator.of(context).pop(); 
       widget.onGoalsUpdated();
     });
   }
 
+  /// dialoug box build
   @override
   Widget build(BuildContext context) {
     return Column(

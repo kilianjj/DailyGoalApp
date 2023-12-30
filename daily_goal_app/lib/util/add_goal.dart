@@ -1,24 +1,23 @@
-/// DialougBox for editing creating a new goal
 import 'package:flutter/material.dart';
 import 'package:daily_goal_app/util/button.dart';
 import 'package:daily_goal_app/util/dropdown.dart';
 import 'package:daily_goal_app/pages/home_page.dart';
 import 'package:daily_goal_app/util/goal_tile.dart';
 
-////
-/// DialogBox pop up UI element for adding a new task
-///
+/// Dialog box pop up UI element for adding a new task
 class DialogBox extends StatelessWidget {
+  /// text editting controller and updateGoal function
   final TextEditingController controller;
-  // final Function(List<Goal>) onGoalsUpdated;
   final VoidCallback onGoalsUpdated;
 
+  /// takes the controller and update function
   const DialogBox({
     super.key,
     required this.controller,
     required this.onGoalsUpdated
   });
 
+  /// dialougbox build
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -37,14 +36,6 @@ class DialogBox extends StatelessWidget {
                         hintText: "Enter new goal")),
                 // button for confimring and adding
                 Dropdown(onGoalsUpdated: onGoalsUpdated),
-                // Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-                //   // save button
-                //   Button(
-                //       text: "Save",
-                //       onPressed: (){}),
-                //   // cancel button
-                //   Button(text: "Cancel", onPressed: onCancel)
-                // ])
               ])),
     );
   }

@@ -1,45 +1,47 @@
-// Has all goal class and UI goal tile code
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:daily_goal_app/util/button.dart';
 
-// goal repeat frequency options
+/// goal repeat frequency options enum
 enum RepeatFrequency { daily, weekly, monthly, yearly }
 
 /// Goal class
-/// Constatins task name, time of day to check for streak, etc
+/// Contains task name, streak length, last completed time, and goal frequency
 class Goal {
   String task;
   int streak;
   RepeatFrequency frequency;
-  TimeOfDay checkTime;
   DateTime lastComplete;
 
   Goal(
       {required this.task,
       required this.lastComplete,
       this.frequency = RepeatFrequency.daily,
-      this.checkTime = const TimeOfDay(hour: 0, minute: 0),
       this.streak = 0});
 }
 
-// UI goal element
+/// UI goal tile element
 class GoalTile extends StatelessWidget {
-  // goal attributes
+  /// the associate goal object
   Goal goal;
+
+  /// index of goal tile in the list
   int checked;
+
+  /// delete, edit, and check goal functions
   Function(BuildContext)? delete;
   Function(BuildContext)? edit;
   Function() checker;
 
-  GoalTile(
-      {super.key,
+  /// requires goal, and the field functions
+  GoalTile({super.key,
       required this.goal,
       required this.delete,
       required this.edit,
       required this.checked,
       required this.checker});
 
+  /// goal tile UI build
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -75,7 +77,7 @@ class GoalTile extends StatelessWidget {
                   Text(goal.streak.toString(),
                       style:
                           const TextStyle(fontSize: 20, color: Colors.white)),
-                  FireButton(checked: checked, checker: checker)
+                  CompleteButton(checked: checked, checker: checker)
                 ]))));
   }
 }

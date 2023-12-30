@@ -1,53 +1,55 @@
-// page showing goals
 import 'package:daily_goal_app/util/database.dart';
 import 'package:daily_goal_app/util/goal_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:daily_goal_app/util/add_goal.dart';
 
-final CONTROLLER = TextEditingController();
+/// textbox controller for add/edit goal dialoug box
+final controller = TextEditingController();
 
-// homepage
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
-
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
-// homepage state
 class _HomePageState extends State<HomePage> {
-  // do Hive stuff
+ 
+  // todo: Hive stuff
 
+  /// update UI after goal changes
   void update() {
-    setState(() {
-      // todo: check last completed time and mark those that are completed appropriately
-    });
+    setState(() {});
   }
 
+  /// index retrieved from slideable delete button
+  /// goal is removed from that indice
+  /// UI is updated
   void deleteGoal(int index) {
-    setState(() {
-      goals.removeAt(index);
-    });
+    goals.removeAt(index);
     update();
   }
 
+  /// index retrieved from slideable edit button
+  /// set text controller to current task name
+  /// open up the dialoug box
   void editGoal(int index) {
-    CONTROLLER.text = goals[index].task;
+    controller.text = goals[index].task;
     deleteGoal(index);
     addGoal();
   }
 
-  // function for adding a new goal
+  /// function for adding a new goal
+  /// open dialoug box
   void addGoal() {
     showDialog(
         context: context,
         builder: (context) {
-          return DialogBox(controller: CONTROLLER, onGoalsUpdated: update);
+          return DialogBox(controller: controller, onGoalsUpdated: update);
         });
     // db.updateData();
   }
 
-  // page UI build
+  /// UI build
   @override
   Widget build(BuildContext context) {
     return Scaffold(
