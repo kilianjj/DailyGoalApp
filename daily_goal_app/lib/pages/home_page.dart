@@ -35,6 +35,12 @@ class _HomePageState extends State<HomePage> {
     addGoal();
   }
 
+  void checkGoal(int index) {
+    print(index);
+    goals[index].streak += 1;
+    update();
+  }
+
   // function for adding a new goal
   void addGoal() {
     showDialog(
@@ -65,7 +71,8 @@ class _HomePageState extends State<HomePage> {
               return GoalTile(
                   goal: goals[index],
                   delete: (context) => deleteGoal(index),
-                  edit: (context) => editGoal(index));
+                  edit: (context) => editGoal(index),
+                  checked: index);
             }));
   }
 }

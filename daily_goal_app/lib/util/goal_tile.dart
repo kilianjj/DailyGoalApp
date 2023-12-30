@@ -28,11 +28,15 @@ class Goal {
 class GoalTile extends StatelessWidget {
   // goal attributes
   Goal goal;
-  Function(bool?)? checked;
+  int checked;
   Function(BuildContext)? delete;
   Function(BuildContext)? edit;
 
-  GoalTile({super.key, required this.goal, required this.delete, required this.edit});
+  GoalTile({super.key, 
+            required this.goal,
+            required this.delete, 
+            required this.edit,
+            required this.checked});
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +73,7 @@ class GoalTile extends StatelessWidget {
                   Text(goal.streak.toString(),
                       style:
                           const TextStyle(fontSize: 20, color: Colors.white)),
-                  FireButton()
+                  FireButton(checked: checked)
                 ]))));
   }
 }
