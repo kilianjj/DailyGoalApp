@@ -15,13 +15,12 @@ class Goal {
   TimeOfDay checkTime;
   DateTime lastComplete;
 
-  Goal({
-    required this.task,
-    required this.lastComplete,
-    this.frequency = RepeatFrequency.daily,
-    this.checkTime = const TimeOfDay(hour: 0, minute: 0),
-    this.streak = 0,
-  });
+  Goal(
+      {required this.task,
+      required this.lastComplete,
+      this.frequency = RepeatFrequency.daily,
+      this.checkTime = const TimeOfDay(hour: 0, minute: 0),
+      this.streak = 0});
 }
 
 // UI goal element
@@ -31,12 +30,15 @@ class GoalTile extends StatelessWidget {
   int checked;
   Function(BuildContext)? delete;
   Function(BuildContext)? edit;
+  Function() checker;
 
-  GoalTile({super.key, 
-            required this.goal,
-            required this.delete, 
-            required this.edit,
-            required this.checked});
+  GoalTile(
+      {super.key,
+      required this.goal,
+      required this.delete,
+      required this.edit,
+      required this.checked,
+      required this.checker});
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +75,7 @@ class GoalTile extends StatelessWidget {
                   Text(goal.streak.toString(),
                       style:
                           const TextStyle(fontSize: 20, color: Colors.white)),
-                  FireButton(checked: checked)
+                  FireButton(checked: checked, checker: checker)
                 ]))));
   }
 }

@@ -19,7 +19,9 @@ class _HomePageState extends State<HomePage> {
   // do Hive stuff
 
   void update() {
-    setState(() {});
+    setState(() {
+      // todo: check last completed time and mark those that are completed appropriately
+    });
   }
 
   void deleteGoal(int index) {
@@ -33,12 +35,6 @@ class _HomePageState extends State<HomePage> {
     CONTROLLER.text = goals[index].task;
     deleteGoal(index);
     addGoal();
-  }
-
-  void checkGoal(int index) {
-    print(index);
-    goals[index].streak += 1;
-    update();
   }
 
   // function for adding a new goal
@@ -72,7 +68,8 @@ class _HomePageState extends State<HomePage> {
                   goal: goals[index],
                   delete: (context) => deleteGoal(index),
                   edit: (context) => editGoal(index),
-                  checked: index);
+                  checked: index,
+                  checker: update);
             }));
   }
 }
