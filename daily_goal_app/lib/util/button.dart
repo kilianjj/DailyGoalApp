@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:gradient_icon/gradient_icon.dart';
 import 'package:daily_goal_app/util/database.dart';
 
+/// completion statuses
+// enum CompleteStatus {completed, endingStreak, noStreak}
+
 /// complete goal button and related logic
 class CompleteButton extends StatefulWidget {
   final int checked;
@@ -89,7 +92,8 @@ class _CompleteButtonState extends State<CompleteButton> {
                         end: Alignment.topCenter),
                     size: 50,
                   )
-                : const Icon(Icons.local_fire_department,
+                : 
+                const Icon(Icons.local_fire_department,
                     size: 36.0, color: Colors.white)));
   }
 }
