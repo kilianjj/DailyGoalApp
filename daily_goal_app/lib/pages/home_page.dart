@@ -4,6 +4,7 @@ import 'package:daily_goal_app/util/goal_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:daily_goal_app/util/add_goal.dart';
 import 'package:daily_goal_app/util/button.dart';
+import 'package:daily_goal_app/util/style.dart';
 
 /// textbox controller for add/edit goal dialoug box
 final controller = TextEditingController();
@@ -27,9 +28,9 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    // scheduling UI updates every minute *********** reduce time in real
-    Timer.periodic(const Duration(seconds: 10), (Timer timer) {
-      print(goals[2].status);
+    // scheduling UI updates every minute
+    Timer.periodic(const Duration(minutes: 1), (Timer timer) {
+      // print(goals[2].status);
       // if (timer.tick == 3) {
       //   timer.cancel();
       // }
@@ -77,13 +78,30 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: BACKGROUND_COLOR,
         appBar: AppBar(
-            title: Text("Goals"),
-            backgroundColor: Colors.grey,
-            elevation: 0,
-            centerTitle: true),
+          title: Text("Goals",style: TextStyle(
+                              color: TEXT_COLOR,
+                              fontSize: TEXTSIZE)),
+          backgroundColor: BACKGROUND_COLOR,
+          elevation: 0,
+          centerTitle: true,
+          actions: [
+            IconButton(
+              icon: LIGHTMODE_ACTIVE ? DARKMODE : LIGHTMODE,
+              onPressed: () {
+                setState(() {
+                  LIGHTMODE_ACTIVE = !LIGHTMODE_ACTIVE;
+                  switchColorTheme(LIGHTMODE_ACTIVE);
+                });
+              },
+            ),
+          ],
+        ),
         floatingActionButton: FloatingActionButton(
+          backgroundColor: PRIMARY_COLOR,
+          foregroundColor: TEXT_COLOR,
+          hoverColor: EDIT,
           onPressed: addGoal,
           child: const Icon(Icons.add),
         ),

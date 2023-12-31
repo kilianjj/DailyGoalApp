@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:daily_goal_app/util/button.dart';
+import 'package:daily_goal_app/util/style.dart';
 
 /// goal repeat frequency options enum
 enum RepeatFrequency { daily, weekly, monthly, yearly }
@@ -39,7 +40,8 @@ class GoalTile extends StatelessWidget {
   Function() checker;
 
   /// requires goal, and the field functions
-  GoalTile({super.key,
+  GoalTile(
+      {super.key,
       required this.goal,
       required this.delete,
       required this.edit,
@@ -58,30 +60,30 @@ class GoalTile extends StatelessWidget {
                 SlidableAction(
                     onPressed: edit,
                     icon: Icons.edit,
-                    backgroundColor: Color.fromARGB(255, 206, 204, 204),
+                    backgroundColor: EDIT,
                     borderRadius: BorderRadius.circular(5)),
                 SlidableAction(
                     onPressed: delete,
                     icon: Icons.delete,
-                    backgroundColor: Colors.red,
+                    backgroundColor: DELETE,
                     borderRadius: BorderRadius.circular(5))
               ],
             ),
             child: Container(
                 padding: const EdgeInsets.all(25),
                 decoration: BoxDecoration(
-                    color: Color.fromARGB(115, 207, 207, 207),
+                    color: PRIMARY_COLOR,
                     borderRadius: BorderRadius.circular(5)),
                 child: Row(children: [
                   Padding(
                       padding: const EdgeInsets.all(10.0),
                       child: Text(goal.task,
-                          style: const TextStyle(
-                              fontSize: 20, color: Colors.white))),
+                          style: TextStyle(
+                              fontSize: TEXTSIZE, color: TEXT_COLOR))),
                   const Padding(padding: EdgeInsets.all(5)),
                   Text(goal.streak.toString(),
                       style:
-                          const TextStyle(fontSize: 20, color: Colors.white)),
+                          TextStyle(fontSize: TEXTSIZE, color: TEXT_COLOR)),
                   CompleteButton(checked: checked, updater: checker)
                 ]))));
   }

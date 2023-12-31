@@ -1,6 +1,6 @@
 import 'package:daily_goal_app/util/goal_tile.dart';
+import 'package:daily_goal_app/util/style.dart';
 import 'package:flutter/material.dart';
-import 'package:gradient_icon/gradient_icon.dart';
 import 'package:daily_goal_app/util/database.dart';
 
 const int _minutesPerHour = 60;
@@ -95,19 +95,11 @@ class _CompleteButtonState extends State<CompleteButton> {
     // print("$status, $index"); ************ delete after testing
     switch (goals[index].status) {
       case StreakStatus.completed:
-        return const GradientIcon(
-            icon: Icons.local_fire_department,
-            gradient: LinearGradient(
-                colors: [Colors.deepOrange, Colors.pink],
-                begin: Alignment.bottomCenter,
-                end: Alignment.topCenter),
-            size: 50);
+        return FLAME_COMPLETE;
       case StreakStatus.endingStreak:
-        return const Icon(Icons.local_fire_department,
-            size: 36.0, color: Colors.yellow);
+        return FLAME_ENDING;
       case StreakStatus.noStreak:
-        return const Icon(Icons.local_fire_department,
-            size: 36.0, color: Colors.white);
+        return FLAME_OUT;
     }
   }
 

@@ -1,3 +1,4 @@
+import 'package:daily_goal_app/util/style.dart';
 import 'package:flutter/material.dart';
 import 'package:daily_goal_app/pages/home_page.dart';
 import 'package:daily_goal_app/util/goal_tile.dart';
@@ -56,13 +57,16 @@ class _DropdownState extends State<Dropdown> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
               'Goal Frequency:',
-              style: TextStyle(fontSize: 18),
+              style: TextStyle(fontSize: TEXTSIZE, color: TEXT_COLOR),
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 30),
             DropdownButton<String>(
+              style: TextStyle(color: TEXT_COLOR),
+              dropdownColor: PRIMARY_COLOR,
               value: selectedValue,
               onChanged: (newValue) {
                 setState(() {
@@ -72,7 +76,7 @@ class _DropdownState extends State<Dropdown> {
               items: dropdownItems.map((item) {
                 return DropdownMenuItem<String>(
                   value: item,
-                  child: Text(item),
+                  child: Text(item, style: TextStyle(color: TEXT_COLOR)),
                 );
               }).toList(),
             )
@@ -80,16 +84,17 @@ class _DropdownState extends State<Dropdown> {
         ),
         // SizedBox(height: 20),
         Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ElevatedButton(
               onPressed: () {
                 save(selectedValue);
               },
-              child: Text('Save'),
+              child: Text('Save', style: TextStyle(color: TEXT_COLOR)),
             ),
             ElevatedButton(
               onPressed: cancel,
-              child: Text('Cancel'),
+              child: Text('Cancel', style: TextStyle(color: TEXT_COLOR)),
             )
           ],
         ),

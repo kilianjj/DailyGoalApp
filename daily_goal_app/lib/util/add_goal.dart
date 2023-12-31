@@ -1,3 +1,4 @@
+import 'package:daily_goal_app/util/style.dart';
 import 'package:flutter/material.dart';
 import 'package:daily_goal_app/util/button.dart';
 import 'package:daily_goal_app/util/dropdown.dart';
@@ -21,7 +22,7 @@ class DialogBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      backgroundColor: Colors.yellow[100],
+      backgroundColor: BACKGROUND_COLOR,
       content: Container(
           decoration: BoxDecoration(borderRadius: BorderRadius.circular(1)),
           // height: 150,
