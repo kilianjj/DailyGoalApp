@@ -77,7 +77,7 @@ class GoalTile extends StatelessWidget {
                   Text(goal.streak.toString(),
                       style:
                           const TextStyle(fontSize: 20, color: Colors.white)),
-                  CompleteButton(checked: checked, checker: checker)
+                  CompleteButton(checked: checked, updater: checker)
                 ]))));
   }
 }

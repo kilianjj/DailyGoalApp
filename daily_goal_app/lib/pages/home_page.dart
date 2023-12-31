@@ -13,8 +13,14 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
- 
   // todo: Hive stuff
+
+  ////// delete me after testing **************************
+  void dummy() {
+    goals[0].streak = 0;
+    goals[1].streak = 5;
+    goals[2].streak = 10;
+  }
 
   /// update UI after goal changes
   void update() {
@@ -52,6 +58,8 @@ class _HomePageState extends State<HomePage> {
   /// UI build
   @override
   Widget build(BuildContext context) {
+    /////// remove after testing **************************
+    dummy();
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
