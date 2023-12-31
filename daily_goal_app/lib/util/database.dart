@@ -1,6 +1,6 @@
 import 'package:daily_goal_app/util/goal_tile.dart';
 
-/// need to save dark/light mode too when closing app
+/// need to save dark/light mode too when closing app and noti time
 
 /// current goal list setup - will switch to hive DB soon
 List<Goal> goals = [

@@ -1,11 +1,14 @@
 // ignore_for_file: constant_identifier_names, non_constant_identifier_names
-
 import 'package:flutter/material.dart';
 import 'package:gradient_icon/gradient_icon.dart';
 
 /// todo: put global style stuff in here
 /// 
 /// other icons to consider: trip origin, check circle, task alt, etc
+/// 
+
+TimeOfDay? NOTIFICATION_TIME = MIDNIGHT;
+const TimeOfDay MIDNIGHT = TimeOfDay(hour: 0, minute: 0);
 
 const Icon FLAME_OUT =
     Icon(Icons.local_fire_department_outlined, size: ICON_SIZE, color: WHITE);

@@ -1,6 +1,7 @@
 import 'package:daily_goal_app/util/database.dart';
 import 'dart:async';
 import 'package:daily_goal_app/util/goal_tile.dart';
+import 'package:daily_goal_app/util/notification.dart';
 import 'package:flutter/material.dart';
 import 'package:daily_goal_app/util/add_goal.dart';
 import 'package:daily_goal_app/util/button.dart';
@@ -87,6 +88,7 @@ class _HomePageState extends State<HomePage> {
           elevation: 0,
           centerTitle: true,
           actions: [
+            // ScheduleButton(),        /// readd when revisting notifications
             IconButton(
               icon: LIGHTMODE_ACTIVE ? DARKMODE : LIGHTMODE,
               onPressed: () {
