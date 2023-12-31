@@ -1,10 +1,19 @@
 import 'package:daily_goal_app/util/database.dart';
+import 'dart:async';
 import 'package:daily_goal_app/util/goal_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:daily_goal_app/util/add_goal.dart';
+import 'package:daily_goal_app/util/button.dart';
 
 /// textbox controller for add/edit goal dialoug box
 final controller = TextEditingController();
+
+//// delete me after testing **************************
+void dummy() {
+  goals[0].streak = 1;
+  goals[1].streak = 5;
+  goals[2].streak = 10;
+}
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -15,11 +24,20 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   // todo: Hive stuff
 
-  ////// delete me after testing **************************
-  void dummy() {
-    goals[0].streak = 0;
-    goals[1].streak = 5;
-    goals[2].streak = 10;
+  @override
+  void initState() {
+    super.initState();
+    // scheduling UI updates every minute *********** reduce time in real
+    Timer.periodic(const Duration(seconds: 10), (Timer timer) {
+      print(goals[2].streak);
+      // if (timer.tick == 3) {
+      //   timer.cancel();
+      // }
+      for (int i = 0; i < goals.length; i++) {
+        timecheck(i, DateTime.now());
+      }
+      update();
+    });
   }
 
   /// update UI after goal changes
@@ -58,12 +76,10 @@ class _HomePageState extends State<HomePage> {
   /// UI build
   @override
   Widget build(BuildContext context) {
-    /////// remove after testing **************************
-    dummy();
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-            title: const Text("Goals"),
+            title: Text("Goals"),
             backgroundColor: Colors.grey,
             elevation: 0,
             centerTitle: true),

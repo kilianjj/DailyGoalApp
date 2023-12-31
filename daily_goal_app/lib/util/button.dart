@@ -6,6 +6,47 @@ import 'package:daily_goal_app/util/database.dart';
 /// completion statuses
 enum StreakStatus { completed, endingStreak, noStreak }
 
+int _minutesPerHour = 60;
+
+/// check the time when a goal is marked as completed
+///  based on the goals repeat frequency, see if it is valid to check off
+/// if it is valid, increment the streak of that goal, mark new complete time
+/// returns true if the complete was valid, false otherwise - used to change
+/// button state
+StreakStatus timecheck(int index, DateTime now) {
+  if (goals[index].streak == 0) {
+    return StreakStatus.noStreak;
+  }
+  DateTime last = goals[index].lastComplete;
+  int difference = now.difference(last).inMinutes;
+  int max;
+  int min;
+  switch (goals[index].frequency) {
+    case RepeatFrequency.weekly:
+      max = _minutesPerHour * 24 * 7;
+      min = _minutesPerHour * 24 * 7 ~/ 2;
+      break;
+    case RepeatFrequency.monthly:
+      max = _minutesPerHour * 24 * 30;
+      min = _minutesPerHour * 24 * 30 ~/ 2;
+      break;
+    case RepeatFrequency.yearly:
+      max = _minutesPerHour * 24 * 365;
+      min = _minutesPerHour * 24 * 365 ~/ 2;
+    default:
+      max = _minutesPerHour * 24;
+      min = _minutesPerHour * 24 ~/ 2;
+  }
+  if (difference > max) {
+    goals[index].streak = 0;
+    return StreakStatus.noStreak;
+  }
+  if (difference > min) {
+    return StreakStatus.endingStreak;
+  }
+  return StreakStatus.completed;
+}
+
 /// complete goal button and related logic
 class CompleteButton extends StatefulWidget {
   final int checked;
@@ -39,45 +80,6 @@ class _CompleteButtonState extends State<CompleteButton> {
   void updateStreak(int index, DateTime time) {
     goals[index].lastComplete = time;
     goals[index].streak += 1;
-  }
-
-  /// check the time when a goal is marked as completed
-  ///  based on the goals repeat frequency, see if it is valid to check off
-  /// if it is valid, increment the streak of that goal, mark new complete time
-  /// returns true if the complete was valid, false otherwise - used to change
-  /// button state
-  StreakStatus timecheck(int index, DateTime now) {
-    if (goals[index].streak == 0) {
-      return StreakStatus.noStreak;
-    }
-    DateTime last = goals[index].lastComplete;
-    int difference = now.difference(last).inHours;
-    int max;
-    int min;
-    switch (goals[index].frequency) {
-      case RepeatFrequency.weekly:
-        max = 168;
-        min = 84;
-        break;
-      case RepeatFrequency.monthly:
-        max = 720;
-        min = 360;
-        break;
-      case RepeatFrequency.yearly:
-        max = 8760;
-        min = 4380;
-      default:
-        max = 24;
-        min = 12;
-    }
-    if (difference > max) {
-      goals[index].streak = 0;
-      return StreakStatus.noStreak;
-    }
-    if (difference > min) {
-      return StreakStatus.endingStreak;
-    }
-    return StreakStatus.completed;
   }
 
   /// change the button state if applicable and call timecheck logic
@@ -122,17 +124,5 @@ class _CompleteButtonState extends State<CompleteButton> {
         onTap: updateUI,
         child: Container(
             padding: const EdgeInsets.all(16.0), child: buildButtonChild()));
-    // child: isClicked
-    //     ? const GradientIcon(
-    //         icon: Icons.local_fire_department,
-    //         gradient: LinearGradient(
-    //             colors: [Colors.deepOrange, Colors.pink],
-    //             begin: Alignment.bottomCenter,
-    //             end: Alignment.topCenter),
-    //         size: 50,
-    //       )
-    //     :
-    //     const Icon(Icons.local_fire_department,
-    //         size: 36.0, color: Colors.white)));
   }
 }
