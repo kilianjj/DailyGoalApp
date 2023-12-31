@@ -5,6 +5,9 @@ import 'package:daily_goal_app/util/button.dart';
 /// goal repeat frequency options enum
 enum RepeatFrequency { daily, weekly, monthly, yearly }
 
+/// completion statuses
+enum StreakStatus { completed, endingStreak, noStreak }
+
 /// Goal class
 /// Contains task name, streak length, last completed time, and goal frequency
 class Goal {
@@ -12,10 +15,12 @@ class Goal {
   int streak;
   RepeatFrequency frequency;
   DateTime lastComplete;
+  StreakStatus status;
 
   Goal(
       {required this.task,
       required this.lastComplete,
+      this.status = StreakStatus.noStreak,
       this.frequency = RepeatFrequency.daily,
       this.streak = 0});
 }

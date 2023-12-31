@@ -1,12 +1,16 @@
 import 'package:daily_goal_app/pages/home_page.dart';
 import 'package:flutter/material.dart';
-import 'package:daily_goal_app/pages/home_page.dart';
+import 'package:daily_goal_app/util/button.dart';
+import 'package:daily_goal_app/util/database.dart';
 // import hive
-// import pages
 
-// make async
+// make async after implementing hive???
 void main() {
   dummy();
+  for (int i = 0; i < goals.length; i++) {
+    timecheck(i, DateTime.now());
+  }
+  /// ***** delete me
   runApp(const GoalApp());
 }
 

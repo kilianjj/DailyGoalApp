@@ -3,10 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:gradient_icon/gradient_icon.dart';
 import 'package:daily_goal_app/util/database.dart';
 
-/// completion statuses
-enum StreakStatus { completed, endingStreak, noStreak }
-
-int _minutesPerHour = 60;
+const int _minutesPerHour = 60;
 
 /// check the time when a goal is marked as completed
 ///  based on the goals repeat frequency, see if it is valid to check off
@@ -39,9 +36,11 @@ StreakStatus timecheck(int index, DateTime now) {
   }
   if (difference > max) {
     goals[index].streak = 0;
+    goals[index].status = StreakStatus.noStreak;
     return StreakStatus.noStreak;
   }
   if (difference > min) {
+    goals[index].status = StreakStatus.endingStreak;
     return StreakStatus.endingStreak;
   }
   return StreakStatus.completed;
@@ -61,10 +60,6 @@ class CompleteButton extends StatefulWidget {
 
 /// state of fire button
 class _CompleteButtonState extends State<CompleteButton> {
-  /// status of button will be determined upon time and last complete of goal
-  /// in the constructor
-  late StreakStatus status;
-
   /// index of the goal/button in the list
   int index;
 
@@ -72,34 +67,33 @@ class _CompleteButtonState extends State<CompleteButton> {
   Function() updater;
 
   /// requires checker function, and index of the goal in the list
-  _CompleteButtonState({required this.updater, required this.index}) {
-    status = timecheck(index, DateTime.now());
-  }
+  _CompleteButtonState({required this.updater, required this.index});
 
   /// update streak
   void updateStreak(int index, DateTime time) {
     goals[index].lastComplete = time;
     goals[index].streak += 1;
+    goals[index].status = StreakStatus.completed;
   }
 
   /// change the button state if applicable and call timecheck logic
   void updateUI() {
     setState(() {
-      if (status != StreakStatus.completed) {
+      if (goals[index].status != StreakStatus.completed) {
         DateTime now = DateTime.now();
         if (timecheck(index, now) != StreakStatus.completed) {
           updateStreak(index, now);
-          status = StreakStatus.completed;
           updater();
         }
       }
     });
   }
 
+  /// change button appears based on the status of the goal
   Widget buildButtonChild() {
     // Customize the button's appearance based on the current streakStatus value
     // print("$status, $index"); ************ delete after testing
-    switch (status) {
+    switch (goals[index].status) {
       case StreakStatus.completed:
         return const GradientIcon(
             icon: Icons.local_fire_department,

@@ -29,7 +29,7 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     // scheduling UI updates every minute *********** reduce time in real
     Timer.periodic(const Duration(seconds: 10), (Timer timer) {
-      print(goals[2].streak);
+      print(goals[2].status);
       // if (timer.tick == 3) {
       //   timer.cancel();
       // }
