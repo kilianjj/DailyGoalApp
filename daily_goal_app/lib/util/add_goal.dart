@@ -32,9 +32,14 @@ class DialogBox extends StatelessWidget {
                 // for user input
                 TextField(
                     controller: controller,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
+                      enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: TEXT_COLOR)),
+                      focusedBorder:  OutlineInputBorder(borderSide: BorderSide(color: TEXT_COLOR)),
+                      hintStyle: TextStyle(color: TEXT_COLOR),
                         border: OutlineInputBorder(),
-                        hintText: "Enter new goal")),
+                        hintText: "Enter new goal"),
+                        style: TextStyle(color: TEXT_COLOR),
+                        cursorColor: TEXT_COLOR),
                 // button for confimring and adding
                 Dropdown(onGoalsUpdated: onGoalsUpdated),
               ])),

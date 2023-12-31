@@ -67,6 +67,9 @@ class _DropdownState extends State<Dropdown> {
             DropdownButton<String>(
               style: TextStyle(color: TEXT_COLOR),
               dropdownColor: PRIMARY_COLOR,
+              focusColor: BACKGROUND_COLOR,
+              iconEnabledColor: TEXT_COLOR,
+              iconDisabledColor: TEXT_COLOR,
               value: selectedValue,
               onChanged: (newValue) {
                 setState(() {
@@ -86,19 +89,57 @@ class _DropdownState extends State<Dropdown> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            ElevatedButton(
-              onPressed: () {
-                save(selectedValue);
-              },
-              child: Text('Save', style: TextStyle(color: TEXT_COLOR)),
-            ),
-            ElevatedButton(
-              onPressed: cancel,
-              child: Text('Cancel', style: TextStyle(color: TEXT_COLOR)),
-            )
-          ],
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: CircularIconButton(
+                  onPressed: cancel,
+                  icon: Icons.delete,
+                  backgroundColor: PRIMARY_COLOR,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: CircularIconButton(
+                  onPressed: () {
+                    save(selectedValue);
+                  },
+                  icon: Icons.check,
+                  backgroundColor: PRIMARY_COLOR),
+              )
+          ]
         ),
       ],
+    );
+  }
+}
+
+class CircularIconButton extends StatelessWidget {
+  final VoidCallback onPressed;
+  final IconData icon;
+  final Color backgroundColor;
+
+  const CircularIconButton({
+    required this.onPressed,
+    required this.icon,
+    required this.backgroundColor,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onPressed,
+      borderRadius: BorderRadius.circular(20.0), // Adjust the border radius as needed
+      child: Container(
+        padding: EdgeInsets.all(12.0),
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: backgroundColor,
+        ),
+        child: Icon(
+          icon,
+          color: TEXT_COLOR, // Icon color
+        ),
+      ),
     );
   }
 }
