@@ -6,9 +6,11 @@ import 'package:gradient_icon/gradient_icon.dart';
 /// 
 /// other icons to consider: trip origin, check circle, task alt, etc
 /// 
+/// 
 
-TimeOfDay? NOTIFICATION_TIME = MIDNIGHT;
-const TimeOfDay MIDNIGHT = TimeOfDay(hour: 0, minute: 0);
+////////// revisit when doing notis
+// TimeOfDay? NOTIFICATION_TIME = MIDNIGHT;
+// const TimeOfDay MIDNIGHT = TimeOfDay(hour: 0, minute: 0);
 
 const Icon FLAME_OUT =
     Icon(Icons.local_fire_department_outlined, size: ICON_SIZE, color: WHITE);
