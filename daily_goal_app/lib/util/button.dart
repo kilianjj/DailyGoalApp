@@ -11,13 +11,13 @@ const int _minutesPerHour = 60;
 /// returns true if the complete was valid, false otherwise - used to change
 /// button state
 StreakStatus timecheck(int index, DateTime now) {
-  if (goals[index].streak == 0) {
+  if (DATABASE.goals[index].streak == 0) {
     return StreakStatus.noStreak;
   }
-  DateTime last = goals[index].lastComplete;
+  DateTime last = DATABASE.goals[index].lastComplete;
   int difference = now.difference(last).inMinutes;
   int limit;
-  switch (goals[index].frequency) {
+  switch (DATABASE.goals[index].frequency) {
     case RepeatFrequency.weekly:
       limit = _minutesPerHour * 24 * 7;
       break;
@@ -33,8 +33,8 @@ StreakStatus timecheck(int index, DateTime now) {
     return StreakStatus.completed;
   }
   if (difference >= limit) {
-    goals[index].streak = 0;
-    goals[index].status = StreakStatus.noStreak;
+    DATABASE.goals[index].streak = 0;
+    DATABASE.goals[index].status = StreakStatus.noStreak;
     return StreakStatus.noStreak;
   }
   return StreakStatus.endingStreak;
@@ -65,7 +65,7 @@ class _CompleteButtonState extends State<CompleteButton> {
 
   /// update streak
   void updateStreak(int index, DateTime time) {
-    switch (goals[index].frequency) {
+    switch (DATABASE.goals[index].frequency) {
       case RepeatFrequency.weekly:
         time.add(const Duration(days: 7));
         break;
@@ -77,15 +77,15 @@ class _CompleteButtonState extends State<CompleteButton> {
       default:
         time.add(const Duration(days: 1));
     }
-    goals[index].lastComplete = time;
-    goals[index].streak += 1;
-    goals[index].status = StreakStatus.completed;
+    DATABASE.goals[index].lastComplete = time;
+    DATABASE.goals[index].streak += 1;
+    DATABASE.goals[index].status = StreakStatus.completed;
   }
 
   /// change the button state if applicable and call timecheck logic
   void updateUI() {
     setState(() {
-      if (goals[index].status != StreakStatus.completed) {
+      if (DATABASE.goals[index].status != StreakStatus.completed) {
         DateTime now = DateTime.now();
         if (timecheck(index, now) != StreakStatus.completed) {
           updateStreak(index, now);
@@ -99,7 +99,7 @@ class _CompleteButtonState extends State<CompleteButton> {
   Widget buildButtonChild() {
     // Customize the button's appearance based on the current streakStatus value
     // print("$status, $index"); ************ delete after testing
-    switch (goals[index].status) {
+    switch (DATABASE.goals[index].status) {
       case StreakStatus.completed:
         return FLAME_COMPLETE;
       case StreakStatus.endingStreak:

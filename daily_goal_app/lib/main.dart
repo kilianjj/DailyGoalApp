@@ -1,20 +1,23 @@
 import 'package:daily_goal_app/pages/home_page.dart';
 import 'package:flutter/material.dart';
-import 'package:daily_goal_app/util/button.dart';
 import 'package:daily_goal_app/util/database.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
-
+import 'package:daily_goal_app/util/goal_tile.dart';
+import 'package:daily_goal_app/util/goal_adapter.dart';
+import 'package:daily_goal_app/util/style.dart';
 /// reimport when revisiting notifications
 // import 'package:timezone/data/latest.dart' as tz;
 // import 'package:timezone/timezone.dart' as tz;
 // import 'package:daily_goal_app/util/notification.dart';
 // import hive
 
-void updateStreaks() {
-  for (int i = 0; i < goals.length; i++) {
-    timecheck(i, DateTime.now());
-  }
+void initHiveBoxes() async {
+  final appDocumentDir = await path_provider.getApplicationDocumentsDirectory();
+  Hive.init(appDocumentDir.path);
+  await Hive.openBox<Goal>('GoalsBox');
+  await Hive.openBox<bool>('LightModeBox');
+  Hive.registerAdapter(GoalAdapter());
 }
 
 void main() async {
@@ -24,15 +27,17 @@ void main() async {
   // print(tz.local.currentTimeZone);
   // Output information about the local time zone
   WidgetsFlutterBinding.ensureInitialized();
-  /////////////////// hive stuff
-  // final appDocumentDir = await path_provider.getApplicationDocumentsDirectory();
-  // Hive.init(appDocumentDir.path);
-  // await Hive.openBox('Goals');
-  // await Hive.openBox('LightMode');
-  // Hive.init(appDocumentDirectory.path);
-  // await Hive.openBox('myBox');
+  /// hive stuff - load existing goals and lightmode
+  initHiveBoxes();
+  LIGHTMODE_ACTIVE = DATABASE.loadLightMode();
+  DATABASE.goals = DATABASE.loadGoals();
+  if (DATABASE.goals.isEmpty) {
+    DATABASE.populateInitialGoal();
+  }
   dummy(); //////////////////////// delete me ***
-  updateStreaks();
+  /// update streak status based on current time
+  DATABASE.updateStreaks();
+  /// run app
   runApp(const GoalApp());
 }
 

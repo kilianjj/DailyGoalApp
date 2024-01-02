@@ -1,22 +1,51 @@
-import 'package:daily_goal_app/util/database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:daily_goal_app/util/button.dart';
 import 'package:daily_goal_app/util/style.dart';
+import 'package:hive/hive.dart';
 
 /// goal repeat frequency options enum
-enum RepeatFrequency { daily, weekly, monthly, yearly }
+@HiveType(typeId: 1)
+enum RepeatFrequency {
+  @HiveField(0)
+  daily,
+  @HiveField(1)
+  weekly,
+  @HiveField(2)
+  monthly,
+  @HiveField(3)
+  yearly
+}
 
 /// completion statuses
-enum StreakStatus { completed, endingStreak, noStreak }
+@HiveType(typeId: 2)
+enum StreakStatus {
+  @HiveField(0)
+  completed,
+  @HiveField(1)
+  endingStreak,
+  @HiveField(2)
+  noStreak
+}
 
 /// Goal class
 /// Contains task name, streak length, last completed time, and goal frequency
-class Goal {
+@HiveType(typeId: 0)
+class Goal extends HiveObject {
+  // goal name
+  @HiveField(0)
   String task;
+  // current streak for the goal
+  @HiveField(1)
   int streak;
+  // goal frequency type
+  @HiveField(2)
   RepeatFrequency frequency;
+  // time goal was last completed
+  @HiveField(3)
   DateTime lastComplete;
+  // current streak status
+  @HiveField(4)
   StreakStatus status;
 
   Goal(
@@ -49,18 +78,18 @@ class GoalTile extends StatelessWidget {
       required this.checked,
       required this.checker});
 
-    String getLabel(RepeatFrequency freq){
-      switch (freq) {
-        case RepeatFrequency.weekly:
-          return "Weekly";
-        case RepeatFrequency.monthly:
-          return "Monthly";
-        case RepeatFrequency.yearly:
-          return "Yearly";
-        default:
-          return "Daily";
-      }
+  String getLabel(RepeatFrequency freq) {
+    switch (freq) {
+      case RepeatFrequency.weekly:
+        return "Weekly";
+      case RepeatFrequency.monthly:
+        return "Monthly";
+      case RepeatFrequency.yearly:
+        return "Yearly";
+      default:
+        return "Daily";
     }
+  }
 
   /// goal tile UI build
   @override
@@ -94,7 +123,8 @@ class GoalTile extends StatelessWidget {
                       child: Text(goal.task,
                           style: TextStyle(
                               fontSize: TEXTSIZE, color: TEXT_COLOR))),
-                              Text(getLabel(goal.frequency), style: TextStyle(fontSize: TEXTSIZE, color: TEXT_COLOR)),
+                  Text(getLabel(goal.frequency),
+                      style: TextStyle(fontSize: TEXTSIZE, color: TEXT_COLOR)),
                   const Padding(padding: EdgeInsets.all(5)),
                   Text(goal.streak.toString(),
                       style: TextStyle(fontSize: TEXTSIZE, color: TEXT_COLOR)),

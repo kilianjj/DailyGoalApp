@@ -42,7 +42,7 @@ class _DropdownState extends State<Dropdown> {
       // new goal object
       Goal newGoal = Goal(
           task: controller.text, lastComplete: DateTime.now(), frequency: f);
-      goals.add(newGoal);
+      DATABASE.goals.add(newGoal);
       controller.clear();
       // close dialoug box
       Navigator.of(context).pop(); 
