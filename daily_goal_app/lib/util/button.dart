@@ -83,7 +83,7 @@ class _CompleteButtonState extends State<CompleteButton> {
   }
 
   /// change the button state if applicable and call timecheck logic
-  void updateUI(){
+  void updateUI() {
     setState(() {
       if (DATABASE.goals[index].status != StreakStatus.completed) {
         DateTime now = DateTime.now();
@@ -106,6 +106,8 @@ class _CompleteButtonState extends State<CompleteButton> {
       case StreakStatus.endingStreak:
         return FLAME_ENDING;
       case StreakStatus.noStreak:
+        return FLAME_OUT;
+      default:
         return FLAME_OUT;
     }
   }

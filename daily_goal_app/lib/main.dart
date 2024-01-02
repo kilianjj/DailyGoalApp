@@ -1,4 +1,5 @@
 import 'package:daily_goal_app/pages/home_page.dart';
+import 'package:daily_goal_app/util/goal_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:daily_goal_app/util/database.dart';
 // import 'package:path_provider/path_provider.dart' as path_provider;
@@ -19,18 +20,20 @@ void main() async {
   // Output information about the local time zone
 
   /// hive stuff - load existing goals and lightmode
+  ///
   await Hive.initFlutter();
-  Hive.openBox(GoalDatabase.GOALBOX);
-  Hive.openBox(GoalDatabase.LIGHTMODEBOX);
+  Box<Goal> goalbox = await Hive.openBox(GoalDatabase.GOALBOX);
+  Box<bool> lightbox = await Hive.openBox(GoalDatabase.LIGHTMODEBOX);
   Hive.registerAdapter(GoalAdapter());
+  DATABASE = GoalDatabase(goalBox: goalbox, lightBox: lightbox);
   DATABASE.loadLightMode();
-  // DATABASE.loadGoals();
+  DATABASE.loadGoals();
   if (DATABASE.goals.isEmpty) {
     DATABASE.populateInitialGoal();
   }
   DATABASE.updateStreaks();
 
-  /// run app
+  // /// run app
   runApp(const GoalApp());
 }
 

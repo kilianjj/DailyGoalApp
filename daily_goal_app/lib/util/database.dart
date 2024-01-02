@@ -7,30 +7,31 @@ import 'package:hive/hive.dart';
 import 'package:daily_goal_app/util/button.dart';
 
 // ignore: non_constant_identifier_names
-var DATABASE = GoalDatabase();
+var DATABASE;
 
 class GoalDatabase {
   /// Hive box and key names
-  static const String LIGHTMODEBOX = "LightModeBox";
-  static const String GOALBOX = "GoalsBox";
-  static const String GOALKEY = "goals";
-  static const String LIGHTMODEKEY = "lightmode";
+  static const String LIGHTMODEBOX = "LIGHT";
+  static const String GOALBOX = "GOALS";
+  static const String GOALKEY = "goalkey";
+  static const String LIGHTMODEKEY = "lightkey";
+
+  Box<Goal> goalBox;
+  Box<bool> lightBox;
+
+  GoalDatabase({required this.goalBox, required this.lightBox});
+
+  void closeBoxes() {
+    goalBox.close();
+    lightBox.close();
+  }
 
   void loadLightMode() async {
-    var box = await Hive.openBox(LIGHTMODEBOX);
-    LIGHTMODE_ACTIVE = box.get(LIGHTMODEKEY, defaultValue: true);
-    await box.close();
+    LIGHTMODE_ACTIVE = lightBox.get(LIGHTMODEKEY, defaultValue: true);
   }
 
   void saveLightMode(bool mode) async {
-    var box = await Hive.openBox(LIGHTMODEBOX);
-    box.put(LIGHTMODEKEY, mode);
-    if (box.get(LIGHTMODEKEY)) {
-      print("light");
-    } else {
-      print("dark");
-    }
-    await box.close();
+    lightBox.put(LIGHTMODEKEY, mode);
   }
 
   void populateInitialGoal() {
@@ -38,16 +39,12 @@ class GoalDatabase {
   }
 
   void saveGoals() async {
-    var box = await Hive.openBox(GOALBOX);
-    box.clear();
-    box.addAll(goals);
-    await box.close();
+    goalBox.clear();
+    goalBox.addAll(goals);
   }
 
   void loadGoals() async {
-    var box = await Hive.openBox(GOALBOX);
-    goals = box.values.toList() as List<Goal>;
-    await box.close();
+    goals = goalBox.values.toList();
   }
 
   void updateStreaks() {
