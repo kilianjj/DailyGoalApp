@@ -16,11 +16,10 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
+class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addObserver(this);
     // scheduling UI updates every minute
     Timer.periodic(const Duration(minutes: 1), (Timer timer) {
       for (int i = 0; i < DATABASE.goals.length; i++) {
@@ -30,21 +29,9 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     });
   }
 
-  @override
-  void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
-    super.dispose();
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.detached) {
-      DATABASE.closeBoxes();
-    }
-  }
-
   /// update UI after goal changes
   void update() {
+    DATABASE.saveGoals();
     setState(() {});
   }
 
@@ -53,7 +40,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   /// UI is updated
   void deleteGoal(int index) {
     DATABASE.goals.removeAt(index);
-    DATABASE.saveGoals();
     update();
   }
 
@@ -74,7 +60,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         builder: (context) {
           return DialogBox(controller: controller, onGoalsUpdated: update);
         });
-    DATABASE.saveGoals();
   }
 
   /// UI build
@@ -91,23 +76,13 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
           actions: [
             // ScheduleButton(),        /// readd when revisting notifications
             IconButton(
-              icon: LIGHTMODE_ACTIVE! ? DARKMODE : LIGHTMODE,
+              icon: LIGHTMODE_ACTIVE ? DARKMODE : LIGHTMODE,
               onPressed: () {
                 setState(() {
-                  if (LIGHTMODE_ACTIVE!) {
-                    print("light to");
-                  } else {
-                    print("dark to");
-                  }
-                  LIGHTMODE_ACTIVE = !LIGHTMODE_ACTIVE!;
-                  if (LIGHTMODE_ACTIVE!) {
-                    print("light");
-                  } else {
-                    print("dark");
-                  }
-                  switchColorTheme(LIGHTMODE_ACTIVE!);
+                  LIGHTMODE_ACTIVE = !LIGHTMODE_ACTIVE;
+                  switchColorTheme(LIGHTMODE_ACTIVE);
                 });
-                DATABASE.saveLightMode(LIGHTMODE_ACTIVE!);
+                DATABASE.saveLightMode(LIGHTMODE_ACTIVE);
               },
             ),
           ],

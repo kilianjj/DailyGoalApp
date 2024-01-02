@@ -1,12 +1,9 @@
 // ignore_for_file: constant_identifier_names
-import 'dart:io';
-
 import 'package:daily_goal_app/util/goal_tile.dart';
-import 'package:daily_goal_app/util/style.dart';
+// ignore_for_file: non_constant_identifier_names
 import 'package:hive/hive.dart';
 import 'package:daily_goal_app/util/button.dart';
 
-// ignore: non_constant_identifier_names
 var DATABASE = GoalDatabase();
 
 class GoalDatabase {
@@ -18,11 +15,6 @@ class GoalDatabase {
   static late Box<Goal> GBOX;
   static late Box<bool> LBOX;
 
-  void closeBoxes() {
-    GBOX.close();
-    LBOX.close();
-  }
-
   Future<bool> loadLightMode() async {
     return LBOX.get(LIGHTMODEKEY, defaultValue: true)!;
   }
@@ -32,12 +24,14 @@ class GoalDatabase {
   }
 
   void populateInitialGoal() {
-    goals = [Goal(task: "This is a goal!", lastComplete: DateTime.now())];
+    goals = [Goal(task: "Add your own goals!", lastComplete: DateTime.now())];
   }
 
   void saveGoals() async {
-    GBOX.clear();
-    GBOX.addAll(goals);
+    await GBOX.clear();
+    for (int i = 0; i < goals.length; i++) {
+      await GBOX.put(i, goals[i]);
+    }
   }
 
   void loadGoals() async {
@@ -51,21 +45,4 @@ class GoalDatabase {
   }
 
   List<Goal> goals = [];
-  // [
-  //   Goal(
-  //       task: "TestGoal",
-  //       frequency: RepeatFrequency.weekly,
-  //       lastComplete: DateTime(2023, 12, 28, 2, 5),
-  //       status: StreakStatus.endingStreak),
-  //   Goal(
-  //       task: "Exercise",
-  //       frequency: RepeatFrequency.yearly,
-  //       lastComplete: DateTime(2023, 7, 3, 0, 0),
-  //       status: StreakStatus.endingStreak),
-  //   Goal(
-  //       task: "Exercise2",
-  //       frequency: RepeatFrequency.daily,
-  //       lastComplete: DateTime(2023, 12, 31, 23, 49),
-  //       status: StreakStatus.endingStreak)
-  // ];
 }

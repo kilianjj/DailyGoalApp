@@ -2,8 +2,6 @@ import 'package:daily_goal_app/pages/home_page.dart';
 import 'package:daily_goal_app/util/style.dart';
 import 'package:flutter/material.dart';
 import 'package:daily_goal_app/util/database.dart';
-// import 'package:path_provider/path_provider.dart' as path_provider;
-// import 'package:daily_goal_app/util/goal_adapter.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:daily_goal_app/util/goal_tile.dart';
@@ -21,8 +19,7 @@ void main() async {
   // print(tz.local.currentTimeZone);
   // Output information about the local time zone
 
-  /// hive stuff - load existing goals and lightmode
-  ///
+  /// hive stuff: load existing goals and lightmode
   await Hive.initFlutter();
   Hive.registerAdapter(GoalAdapter());
   Hive.registerAdapter(RepeatFrequencyAdapter());
@@ -30,9 +27,9 @@ void main() async {
   GoalDatabase.GBOX = await Hive.openBox(GoalDatabase.GOALBOX);
   GoalDatabase.LBOX = await Hive.openBox(GoalDatabase.LIGHTMODEBOX);
   LIGHTMODE_ACTIVE = await DATABASE.loadLightMode();
-  DATABASE.loadLightMode();
+  await DATABASE.loadLightMode();
   switchColorTheme(LIGHTMODE_ACTIVE);
-  // DATABASE.loadGoals();
+  DATABASE.loadGoals();
   if (DATABASE.goals.isEmpty) {
     DATABASE.populateInitialGoal();
   }
