@@ -3,6 +3,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:daily_goal_app/util/button.dart';
 import 'package:daily_goal_app/util/style.dart';
 import 'package:hive/hive.dart';
+part 'goal_tile.g.dart';
 
 /// goal repeat frequency options enum
 @HiveType(typeId: 1)

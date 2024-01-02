@@ -7,7 +7,7 @@ import 'package:hive/hive.dart';
 import 'package:daily_goal_app/util/button.dart';
 
 // ignore: non_constant_identifier_names
-var DATABASE;
+var DATABASE = GoalDatabase();
 
 class GoalDatabase {
   /// Hive box and key names
@@ -15,23 +15,20 @@ class GoalDatabase {
   static const String GOALBOX = "GOALS";
   static const String GOALKEY = "goalkey";
   static const String LIGHTMODEKEY = "lightkey";
-
-  Box<Goal> goalBox;
-  Box<bool> lightBox;
-
-  GoalDatabase({required this.goalBox, required this.lightBox});
+  static late Box<Goal> GBOX;
+  static late Box<bool> LBOX;
 
   void closeBoxes() {
-    goalBox.close();
-    lightBox.close();
+    GBOX.close();
+    LBOX.close();
   }
 
-  void loadLightMode() async {
-    LIGHTMODE_ACTIVE = lightBox.get(LIGHTMODEKEY, defaultValue: true);
+  Future<bool> loadLightMode() async {
+    return LBOX.get(LIGHTMODEKEY, defaultValue: true)!;
   }
 
   void saveLightMode(bool mode) async {
-    lightBox.put(LIGHTMODEKEY, mode);
+    LBOX.put(LIGHTMODEKEY, mode);
   }
 
   void populateInitialGoal() {
@@ -39,12 +36,12 @@ class GoalDatabase {
   }
 
   void saveGoals() async {
-    goalBox.clear();
-    goalBox.addAll(goals);
+    GBOX.clear();
+    GBOX.addAll(goals);
   }
 
   void loadGoals() async {
-    goals = goalBox.values.toList();
+    goals = GBOX.values.toList();
   }
 
   void updateStreaks() {
@@ -53,7 +50,6 @@ class GoalDatabase {
     }
   }
 
-  /// current goal list setup - will switch to hive DB soon
   List<Goal> goals = [];
   // [
   //   Goal(

@@ -1,10 +1,12 @@
 import 'package:daily_goal_app/pages/home_page.dart';
-import 'package:daily_goal_app/util/goal_tile.dart';
+import 'package:daily_goal_app/util/style.dart';
 import 'package:flutter/material.dart';
 import 'package:daily_goal_app/util/database.dart';
 // import 'package:path_provider/path_provider.dart' as path_provider;
-import 'package:daily_goal_app/util/goal_adapter.dart';
+// import 'package:daily_goal_app/util/goal_adapter.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:daily_goal_app/util/goal_tile.dart';
 
 /// reimport when revisiting notifications
 // import 'package:timezone/data/latest.dart' as tz;
@@ -22,17 +24,19 @@ void main() async {
   /// hive stuff - load existing goals and lightmode
   ///
   await Hive.initFlutter();
-  Box<Goal> goalbox = await Hive.openBox(GoalDatabase.GOALBOX);
-  Box<bool> lightbox = await Hive.openBox(GoalDatabase.LIGHTMODEBOX);
   Hive.registerAdapter(GoalAdapter());
-  DATABASE = GoalDatabase(goalBox: goalbox, lightBox: lightbox);
+  Hive.registerAdapter(RepeatFrequencyAdapter());
+  Hive.registerAdapter(StreakStatusAdapter());
+  GoalDatabase.GBOX = await Hive.openBox(GoalDatabase.GOALBOX);
+  GoalDatabase.LBOX = await Hive.openBox(GoalDatabase.LIGHTMODEBOX);
+  LIGHTMODE_ACTIVE = await DATABASE.loadLightMode();
   DATABASE.loadLightMode();
-  DATABASE.loadGoals();
+  switchColorTheme(LIGHTMODE_ACTIVE);
+  // DATABASE.loadGoals();
   if (DATABASE.goals.isEmpty) {
     DATABASE.populateInitialGoal();
   }
   DATABASE.updateStreaks();
-
   // /// run app
   runApp(const GoalApp());
 }

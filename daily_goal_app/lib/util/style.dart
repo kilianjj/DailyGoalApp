@@ -41,7 +41,7 @@ const Color FLAME3 = Colors.yellow;
 const double TEXTSIZE = 18;
 const double ICON_SIZE = 50;
 
-bool? LIGHTMODE_ACTIVE;
+late bool LIGHTMODE_ACTIVE;
 Color BACKGROUND_COLOR = LIGHT_PRIMARY;
 Color PRIMARY_COLOR = LIGHT_SECONDARY;
 Color TEXT_COLOR = BLACK;

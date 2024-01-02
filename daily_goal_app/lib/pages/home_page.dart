@@ -80,12 +80,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   /// UI build
   @override
   Widget build(BuildContext context) {
-    LIGHTMODE_ACTIVE ??= true;
-    if (LIGHTMODE_ACTIVE!) {
-      print("light");
-    } else {
-      print("dark");
-    }
     return Scaffold(
         backgroundColor: BACKGROUND_COLOR,
         appBar: AppBar(
