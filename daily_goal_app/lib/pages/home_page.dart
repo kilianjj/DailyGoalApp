@@ -1,7 +1,6 @@
 import 'package:daily_goal_app/util/database.dart';
 import 'dart:async';
 import 'package:daily_goal_app/util/goal_tile.dart';
-import 'package:daily_goal_app/util/notification.dart';
 import 'package:flutter/material.dart';
 import 'package:daily_goal_app/util/add_goal.dart';
 import 'package:daily_goal_app/util/button.dart';
@@ -9,13 +8,6 @@ import 'package:daily_goal_app/util/style.dart';
 
 /// textbox controller for add/edit goal dialoug box
 final controller = TextEditingController();
-
-//// delete me after testing **************************
-void dummy() {
-  DATABASE.goals[0].streak = 1;
-  DATABASE.goals[1].streak = 5;
-  DATABASE.goals[2].streak = 10;
-}
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -74,6 +66,12 @@ class _HomePageState extends State<HomePage> {
   /// UI build
   @override
   Widget build(BuildContext context) {
+    LIGHTMODE_ACTIVE ??= true;
+    if (LIGHTMODE_ACTIVE!) {
+      print("light");
+    } else {
+      print("dark");
+    }
     return Scaffold(
         backgroundColor: BACKGROUND_COLOR,
         appBar: AppBar(
@@ -88,7 +86,17 @@ class _HomePageState extends State<HomePage> {
               icon: LIGHTMODE_ACTIVE! ? DARKMODE : LIGHTMODE,
               onPressed: () {
                 setState(() {
+                  if (LIGHTMODE_ACTIVE!) {
+                    print("light to");
+                  } else {
+                    print("dark to");
+                  }
                   LIGHTMODE_ACTIVE = !LIGHTMODE_ACTIVE!;
+                  if (LIGHTMODE_ACTIVE!) {
+                    print("light");
+                  } else {
+                    print("dark");
+                  }
                   switchColorTheme(LIGHTMODE_ACTIVE!);
                 });
                 DATABASE.saveLightMode(LIGHTMODE_ACTIVE!);
