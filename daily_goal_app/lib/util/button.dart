@@ -16,34 +16,28 @@ StreakStatus timecheck(int index, DateTime now) {
   }
   DateTime last = goals[index].lastComplete;
   int difference = now.difference(last).inMinutes;
-  int max;
-  int min;
+  int limit;
   switch (goals[index].frequency) {
     case RepeatFrequency.weekly:
-      max = _minutesPerHour * 24 * 7;
-      min = _minutesPerHour * 24 * 7 ~/ 2;
+      limit = _minutesPerHour * 24 * 7;
       break;
     case RepeatFrequency.monthly:
-      max = _minutesPerHour * 24 * 30;
-      min = _minutesPerHour * 24 * 30 ~/ 2;
+      limit = _minutesPerHour * 24 * 30;
       break;
     case RepeatFrequency.yearly:
-      max = _minutesPerHour * 24 * 365;
-      min = _minutesPerHour * 24 * 365 ~/ 2;
+      limit = _minutesPerHour * 24 * 365;
     default:
-      max = _minutesPerHour * 24;
-      min = _minutesPerHour * 24 ~/ 2;
+      limit = _minutesPerHour * 24;
   }
-  if (difference > max) {
+  if (difference <= 0) {
+    return StreakStatus.completed;
+  }
+  if (difference >= limit) {
     goals[index].streak = 0;
     goals[index].status = StreakStatus.noStreak;
     return StreakStatus.noStreak;
   }
-  if (difference > min) {
-    goals[index].status = StreakStatus.endingStreak;
-    return StreakStatus.endingStreak;
-  }
-  return StreakStatus.completed;
+  return StreakStatus.endingStreak;
 }
 
 /// complete goal button and related logic
@@ -71,6 +65,18 @@ class _CompleteButtonState extends State<CompleteButton> {
 
   /// update streak
   void updateStreak(int index, DateTime time) {
+    switch (goals[index].frequency) {
+      case RepeatFrequency.weekly:
+        time.add(const Duration(days: 7));
+        break;
+      case RepeatFrequency.monthly:
+        time.add(const Duration(days: 30));
+        break;
+      case RepeatFrequency.yearly:
+        time.add(const Duration(days: 365));
+      default:
+        time.add(const Duration(days: 1));
+    }
     goals[index].lastComplete = time;
     goals[index].streak += 1;
     goals[index].status = StreakStatus.completed;

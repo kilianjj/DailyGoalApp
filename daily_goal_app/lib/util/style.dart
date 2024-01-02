@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:gradient_icon/gradient_icon.dart';
 
 /// todo: put global style stuff in here
-/// 
+///
 /// other icons to consider: trip origin, check circle, task alt, etc
-/// 
-/// 
+///
+///
 
 ////////// revisit when doing notis
 // TimeOfDay? NOTIFICATION_TIME = MIDNIGHT;
@@ -16,14 +16,15 @@ const Icon FLAME_OUT =
     Icon(Icons.local_fire_department_outlined, size: ICON_SIZE, color: WHITE);
 const Icon FLAME_ENDING =
     Icon(Icons.local_fire_department_outlined, size: ICON_SIZE, color: FLAME3);
-const GradientIcon FLAME_COMPLETE =
-    GradientIcon(icon: Icons.local_fire_department_outlined,
-                  gradient: LinearGradient(colors: [FLAME1, FLAME2],
-                  begin: Alignment.bottomCenter,
-                  end: Alignment.topCenter),
-                  size: ICON_SIZE);    
+const GradientIcon FLAME_COMPLETE = GradientIcon(
+    icon: Icons.local_fire_department_outlined,
+    gradient: LinearGradient(
+        colors: [FLAME1, FLAME2],
+        begin: Alignment.bottomCenter,
+        end: Alignment.topCenter),
+    size: ICON_SIZE);
 const Icon DARKMODE = Icon(Icons.bedtime, size: 30, color: WHITE);
-const Icon LIGHTMODE = Icon(Icons.light_mode, size:30, color: WHITE);
+const Icon LIGHTMODE = Icon(Icons.light_mode, size: 30, color: WHITE);
 
 const Color LIGHT_PRIMARY = Color.fromARGB(255, 176, 205, 228);
 const Color DARK_PRIMARY = Color.fromARGB(255, 9, 38, 61);
@@ -37,7 +38,7 @@ const Color FLAME1 = Colors.deepOrange;
 const Color FLAME2 = Colors.pink;
 const Color FLAME3 = Colors.yellow;
 
-const double TEXTSIZE = 24;
+const double TEXTSIZE = 18;
 const double ICON_SIZE = 50;
 
 bool LIGHTMODE_ACTIVE = true;

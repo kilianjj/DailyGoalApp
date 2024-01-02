@@ -1,3 +1,4 @@
+import 'package:daily_goal_app/util/database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:daily_goal_app/util/button.dart';
@@ -48,6 +49,19 @@ class GoalTile extends StatelessWidget {
       required this.checked,
       required this.checker});
 
+    String getLabel(RepeatFrequency freq){
+      switch (freq) {
+        case RepeatFrequency.weekly:
+          return "Weekly";
+        case RepeatFrequency.monthly:
+          return "Monthly";
+        case RepeatFrequency.yearly:
+          return "Yearly";
+        default:
+          return "Daily";
+      }
+    }
+
   /// goal tile UI build
   @override
   Widget build(BuildContext context) {
@@ -80,10 +94,10 @@ class GoalTile extends StatelessWidget {
                       child: Text(goal.task,
                           style: TextStyle(
                               fontSize: TEXTSIZE, color: TEXT_COLOR))),
+                              Text(getLabel(goal.frequency), style: TextStyle(fontSize: TEXTSIZE, color: TEXT_COLOR)),
                   const Padding(padding: EdgeInsets.all(5)),
                   Text(goal.streak.toString(),
-                      style:
-                          TextStyle(fontSize: TEXTSIZE, color: TEXT_COLOR)),
+                      style: TextStyle(fontSize: TEXTSIZE, color: TEXT_COLOR)),
                   CompleteButton(checked: checked, updater: checker)
                 ]))));
   }
