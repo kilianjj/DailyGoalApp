@@ -91,7 +91,7 @@ class _HomePageState extends State<HomePage> {
                   LIGHTMODE_ACTIVE = !LIGHTMODE_ACTIVE!;
                   switchColorTheme(LIGHTMODE_ACTIVE!);
                 });
-                DATABASE.saveLightMode(mode)
+                DATABASE.saveLightMode(LIGHTMODE_ACTIVE!);
               },
             ),
           ],
