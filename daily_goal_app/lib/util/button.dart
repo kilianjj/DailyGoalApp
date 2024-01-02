@@ -83,7 +83,7 @@ class _CompleteButtonState extends State<CompleteButton> {
   }
 
   /// change the button state if applicable and call timecheck logic
-  void updateUI() {
+  void updateUI(){
     setState(() {
       if (DATABASE.goals[index].status != StreakStatus.completed) {
         DateTime now = DateTime.now();
@@ -91,6 +91,7 @@ class _CompleteButtonState extends State<CompleteButton> {
           updateStreak(index, now);
           updater();
         }
+        DATABASE.saveGoals();
       }
     });
   }

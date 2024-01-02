@@ -15,8 +15,6 @@ import 'package:daily_goal_app/util/style.dart';
 void initHiveBoxes() async {
   final appDocumentDir = await path_provider.getApplicationDocumentsDirectory();
   Hive.init(appDocumentDir.path);
-  await Hive.openBox<Goal>('GoalsBox');
-  await Hive.openBox<bool>('LightModeBox');
   Hive.registerAdapter(GoalAdapter());
 }
 
@@ -29,8 +27,8 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   /// hive stuff - load existing goals and lightmode
   initHiveBoxes();
-  LIGHTMODE_ACTIVE = DATABASE.loadLightMode();
-  DATABASE.goals = DATABASE.loadGoals();
+  LIGHTMODE_ACTIVE = await DATABASE.loadLightMode();
+  DATABASE.goals = await DATABASE.loadGoals();
   if (DATABASE.goals.isEmpty) {
     DATABASE.populateInitialGoal();
   }

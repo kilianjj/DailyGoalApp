@@ -13,29 +13,35 @@ class GoalDatabase {
   static const String GOALKEY = "goals";
   static const String LIGHTMODEKEY = "lightmode";
 
-  // Hive boxes
-  final _lightModeBox = Hive.box<bool>(LIGHTMODEBOX);
-  final _goalsBox = Hive.box<Goal>(GOALBOX);
-
-  bool loadLightMode() {
-    return _lightModeBox.get(LIGHTMODEKEY, defaultValue: true)!;
+  Future<bool> loadLightMode() async {
+    var box = await Hive.openBox(LIGHTMODEBOX);
+    bool mode = box.get(LIGHTMODEKEY, defaultValue: true)!;
+    await box.close();
+    return mode;
   }
 
-  void saveLightMode(bool mode) {
-    _lightModeBox.put(LIGHTMODEKEY, mode);
+  void saveLightMode(bool mode) async {
+    var box = await Hive.openBox(LIGHTMODEBOX);
+    box.put(LIGHTMODEKEY, mode);
+    await box.close();
   }
 
   void populateInitialGoal() {
     goals = [Goal(task: "This is a goal!", lastComplete: DateTime.now())];
   }
 
-  void saveGoals() {
-    _goalsBox.clear();
-    _goalsBox.addAll(goals);
+  void saveGoals() async {
+    var box = await Hive.openBox(GOALBOX);
+    box.clear();
+    box.addAll(goals);
+    await box.close();
   }
 
-  List<Goal> loadGoals() {
-    return _goalsBox.values.toList();
+  Future<List<Goal>> loadGoals() async {
+    var box = await Hive.openBox(GOALBOX);
+    List<Goal> loaded = box.values.toList() as List<Goal>;
+    await box.close();
+    return loaded;
   }
 
   void updateStreaks() {

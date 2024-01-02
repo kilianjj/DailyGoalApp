@@ -25,7 +25,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
   @override
   void initState() {
     super.initState();
@@ -48,6 +47,7 @@ class _HomePageState extends State<HomePage> {
   /// UI is updated
   void deleteGoal(int index) {
     DATABASE.goals.removeAt(index);
+    DATABASE.saveGoals();
     update();
   }
 
@@ -68,7 +68,7 @@ class _HomePageState extends State<HomePage> {
         builder: (context) {
           return DialogBox(controller: controller, onGoalsUpdated: update);
         });
-    // db.updateData();
+    DATABASE.saveGoals();
   }
 
   /// UI build
@@ -91,6 +91,7 @@ class _HomePageState extends State<HomePage> {
                   LIGHTMODE_ACTIVE = !LIGHTMODE_ACTIVE!;
                   switchColorTheme(LIGHTMODE_ACTIVE!);
                 });
+                DATABASE.saveLightMode(mode)
               },
             ),
           ],
