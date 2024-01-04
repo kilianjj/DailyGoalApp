@@ -7,28 +7,44 @@ import 'package:daily_goal_app/util/database.dart';
 /// dropdown select class
 class Dropdown extends StatefulWidget {
   final VoidCallback onGoalsUpdated;
-  const Dropdown({super.key, required this.onGoalsUpdated});
+  Dropdown(
+      {super.key,
+      required this.onGoalsUpdated,
+      required this.streak,
+      required this.status,
+      required this.completed});
+  int streak;
+  StreakStatus status;
+  DateTime completed;
 
   @override
-  _DropdownState createState() => _DropdownState();
+  _DropdownState createState() => _DropdownState(streak: streak, status: status, completed: completed);
 }
 
 /// dropdown state for adding/editing goals
 class _DropdownState extends State<Dropdown> {
-
   /// holds the selected dropbox item
-  String selectedValue = 'Daily'; 
+  String selectedValue = 'Daily';
+
   /// dropdown options corresponding to goal frequencies
   List<String> dropdownItems = ['Daily', 'Weekly', 'Monthly', 'Yearly'];
+
+  int streak;
+  StreakStatus status;
+  DateTime completed;
+
+  _DropdownState(
+      {required this.streak, required this.status, required this.completed}
+      );
 
   /// clear the text controller and pop back the dialoug box to go to home page
   void cancel() {
     controller.clear();
-    Navigator.of(context).pop(); 
+    Navigator.of(context).pop();
   }
 
   /// save a new goal based on dialoug box entries
-  void save(String freq) {
+  void save(String freq, streak, status, completed) {
     setState(() {
       RepeatFrequency f = RepeatFrequency.daily;
       if (freq == "Weekly") {
@@ -42,11 +58,11 @@ class _DropdownState extends State<Dropdown> {
       }
       // new goal object
       Goal newGoal = Goal(
-          task: controller.text, lastComplete: DateTime.now(), frequency: f);
+          task: controller.text, lastComplete: completed, frequency: f, streak: streak);
       DATABASE.goals.add(newGoal);
       controller.clear();
       // close dialoug box
-      Navigator.of(context).pop(); 
+      Navigator.of(context).pop();
       widget.onGoalsUpdated();
     });
   }
@@ -87,28 +103,25 @@ class _DropdownState extends State<Dropdown> {
           ],
         ),
         // SizedBox(height: 20),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: CircularIconButton(
-                  onPressed: cancel,
-                  icon: Icons.delete,
-                  backgroundColor: PRIMARY_COLOR,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: CircularIconButton(
-                  onPressed: () {
-                    save(selectedValue);
-                  },
-                  icon: Icons.check,
-                  backgroundColor: PRIMARY_COLOR),
-              )
-          ]
-        ),
+        Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: CircularIconButton(
+              onPressed: cancel,
+              icon: Icons.delete,
+              backgroundColor: PRIMARY_COLOR,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: CircularIconButton(
+                onPressed: () {
+                  save(selectedValue, streak, status, completed);
+                },
+                icon: Icons.check,
+                backgroundColor: PRIMARY_COLOR),
+          )
+        ]),
       ],
     );
   }
@@ -131,7 +144,8 @@ class CircularIconButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onPressed,
-      borderRadius: BorderRadius.circular(20.0), // Adjust the border radius as needed
+      borderRadius:
+          BorderRadius.circular(20.0), // Adjust the border radius as needed
       child: Container(
         padding: const EdgeInsets.all(12.0),
         decoration: BoxDecoration(
