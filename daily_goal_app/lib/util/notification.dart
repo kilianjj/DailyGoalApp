@@ -1,5 +1,4 @@
-/// work in progress noteifications
-
+// work in progress noteifications
 
 // import 'package:daily_goal_app/util/style.dart';
 // import 'package:flutter/material.dart';

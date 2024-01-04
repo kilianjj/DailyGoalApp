@@ -1,3 +1,5 @@
+// ignore_for_file: no_logic_in_create_state
+
 import 'package:daily_goal_app/util/goal_tile.dart';
 import 'package:daily_goal_app/util/style.dart';
 import 'package:flutter/material.dart';
@@ -47,7 +49,7 @@ class CompleteButton extends StatefulWidget {
   // UI update function
   final Function() updater;
 
-  CompleteButton({super.key, required this.checked, required this.updater});
+  const CompleteButton({super.key, required this.checked, required this.updater});
 
   @override
   _CompleteButtonState createState() =>

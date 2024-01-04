@@ -33,7 +33,7 @@ class DialogBox extends StatelessWidget {
                       enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: TEXT_COLOR)),
                       focusedBorder:  OutlineInputBorder(borderSide: BorderSide(color: TEXT_COLOR)),
                       hintStyle: TextStyle(color: TEXT_COLOR),
-                        border: OutlineInputBorder(),
+                        border: const OutlineInputBorder(),
                         hintText: "Enter new goal"),
                         style: TextStyle(color: TEXT_COLOR),
                         cursorColor: TEXT_COLOR),

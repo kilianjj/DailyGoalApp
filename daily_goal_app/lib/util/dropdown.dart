@@ -7,7 +7,8 @@ import 'package:daily_goal_app/util/database.dart';
 /// dropdown select class
 class Dropdown extends StatefulWidget {
   final VoidCallback onGoalsUpdated;
-  Dropdown({required this.onGoalsUpdated});
+  const Dropdown({super.key, required this.onGoalsUpdated});
+
   @override
   _DropdownState createState() => _DropdownState();
 }
@@ -63,7 +64,7 @@ class _DropdownState extends State<Dropdown> {
               'Goal Frequency:',
               style: TextStyle(fontSize: TEXTSIZE, color: TEXT_COLOR),
             ),
-            SizedBox(height: 30),
+            const SizedBox(height: 30),
             DropdownButton<String>(
               style: TextStyle(color: TEXT_COLOR),
               dropdownColor: PRIMARY_COLOR,
@@ -120,6 +121,7 @@ class CircularIconButton extends StatelessWidget {
   final Color backgroundColor;
 
   const CircularIconButton({
+    super.key,
     required this.onPressed,
     required this.icon,
     required this.backgroundColor,
@@ -131,7 +133,7 @@ class CircularIconButton extends StatelessWidget {
       onTap: onPressed,
       borderRadius: BorderRadius.circular(20.0), // Adjust the border radius as needed
       child: Container(
-        padding: EdgeInsets.all(12.0),
+        padding: const EdgeInsets.all(12.0),
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           color: backgroundColor,
