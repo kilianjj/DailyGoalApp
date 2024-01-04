@@ -1,3 +1,3 @@
-# daily_goal_app
+# Goal App
 
-A Flutter project for a daily goal app.
+A Flutter project for a goal app with a streak aspect.
