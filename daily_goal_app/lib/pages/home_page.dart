@@ -47,18 +47,29 @@ class _HomePageState extends State<HomePage> {
   /// set text controller to current task name
   /// open up the dialoug box
   void editGoal(int index) {
+    Goal prev = DATABASE.goals[index];
     controller.text = DATABASE.goals[index].task;
     deleteGoal(index);
-    addGoal();
+    addGoal(prev.status, prev.lastComplete, prev.streak);
+    update();
   }
 
   /// function for adding a new goal
   /// open dialoug box
-  void addGoal() {
+  void addGoal(StreakStatus? status, DateTime? complete, int? streak) {
+    status ??= StreakStatus.noStreak;
+    complete ??= DateTime.now();
+    streak ??= 0;
     showDialog(
         context: context,
         builder: (context) {
-          return DialogBox(controller: controller, onGoalsUpdated: update);
+          return DialogBox(
+            controller: controller,
+            onGoalsUpdated: update,
+            status: status!,
+            completed: complete!,
+            streak: streak!
+          );
         });
   }
 
@@ -91,7 +102,7 @@ class _HomePageState extends State<HomePage> {
           backgroundColor: PRIMARY_COLOR,
           foregroundColor: TEXT_COLOR,
           hoverColor: EDIT,
-          onPressed: addGoal,
+          onPressed: () => {addGoal(null, null, null)},
           child: const Icon(Icons.add),
         ),
         body: ListView.builder(
