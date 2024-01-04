@@ -18,7 +18,7 @@ enum RepeatFrequency {
   yearly
 }
 
-/// completion statuses
+/// completion status enum
 @HiveType(typeId: 2)
 enum StreakStatus {
   @HiveField(0)
@@ -30,7 +30,8 @@ enum StreakStatus {
 }
 
 /// Goal class
-/// Contains task name, streak length, last completed time, and goal frequency
+/// Contains task name, streak length, last completed time, goal frequency,
+/// and streak status
 @HiveType(typeId: 0)
 class Goal extends HiveObject {
   // goal name
@@ -79,6 +80,7 @@ class GoalTile extends StatelessWidget {
       required this.checked,
       required this.checker});
 
+  /// to string for enum basically (for goal tile display)
   String getLabel(RepeatFrequency freq) {
     switch (freq) {
       case RepeatFrequency.weekly:

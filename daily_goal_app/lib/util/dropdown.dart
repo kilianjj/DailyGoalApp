@@ -4,7 +4,7 @@ import 'package:daily_goal_app/pages/home_page.dart';
 import 'package:daily_goal_app/util/goal_tile.dart';
 import 'package:daily_goal_app/util/database.dart';
 
-/// dropdown class
+/// dropdown select class
 class Dropdown extends StatefulWidget {
   final VoidCallback onGoalsUpdated;
   Dropdown({required this.onGoalsUpdated});
@@ -113,6 +113,7 @@ class _DropdownState extends State<Dropdown> {
   }
 }
 
+/// save and cancel buttons for adding/editing goals
 class CircularIconButton extends StatelessWidget {
   final VoidCallback onPressed;
   final IconData icon;

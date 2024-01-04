@@ -42,7 +42,9 @@ StreakStatus timecheck(int index, DateTime now) {
 
 /// complete goal button and related logic
 class CompleteButton extends StatefulWidget {
+  /// index of button/goal in list
   final int checked;
+  // UI update function
   final Function() updater;
 
   CompleteButton({super.key, required this.checked, required this.updater});

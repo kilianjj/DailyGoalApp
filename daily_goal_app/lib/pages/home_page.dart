@@ -20,7 +20,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    // scheduling UI updates every minute
+    // scheduling UI updates every minute, check streak statuses too
     Timer.periodic(const Duration(minutes: 1), (Timer timer) {
       for (int i = 0; i < DATABASE.goals.length; i++) {
         timecheck(i, DateTime.now());
