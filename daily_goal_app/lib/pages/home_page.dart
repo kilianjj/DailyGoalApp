@@ -9,32 +9,20 @@ import 'package:daily_goal_app/util/style.dart';
 /// textbox controller for add/edit goal dialoug box
 final controller = TextEditingController();
 
-//// delete me after testing **************************
-void dummy() {
-  goals[0].streak = 1;
-  goals[1].streak = 5;
-  goals[2].streak = 10;
-}
-
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  // todo: Hive stuff
-
   @override
   void initState() {
     super.initState();
-    // scheduling UI updates every minute
+    // scheduling UI updates every minute, check streak statuses too
     Timer.periodic(const Duration(minutes: 1), (Timer timer) {
-      // print(goals[2].status);
-      // if (timer.tick == 3) {
-      //   timer.cancel();
-      // }
-      for (int i = 0; i < goals.length; i++) {
+      for (int i = 0; i < DATABASE.goals.length; i++) {
         timecheck(i, DateTime.now());
       }
       update();
@@ -43,6 +31,7 @@ class _HomePageState extends State<HomePage> {
 
   /// update UI after goal changes
   void update() {
+    DATABASE.saveGoals();
     setState(() {});
   }
 
@@ -50,7 +39,7 @@ class _HomePageState extends State<HomePage> {
   /// goal is removed from that indice
   /// UI is updated
   void deleteGoal(int index) {
-    goals.removeAt(index);
+    DATABASE.goals.removeAt(index);
     update();
   }
 
@@ -58,7 +47,7 @@ class _HomePageState extends State<HomePage> {
   /// set text controller to current task name
   /// open up the dialoug box
   void editGoal(int index) {
-    controller.text = goals[index].task;
+    controller.text = DATABASE.goals[index].task;
     deleteGoal(index);
     addGoal();
   }
@@ -71,7 +60,6 @@ class _HomePageState extends State<HomePage> {
         builder: (context) {
           return DialogBox(controller: controller, onGoalsUpdated: update);
         });
-    // db.updateData();
   }
 
   /// UI build
@@ -80,13 +68,13 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
         backgroundColor: BACKGROUND_COLOR,
         appBar: AppBar(
-          title: Text("Goals",style: TextStyle(
-                              color: TEXT_COLOR,
-                              fontSize: TEXTSIZE)),
+          title: Text("Goals",
+              style: TextStyle(color: TEXT_COLOR, fontSize: TEXTSIZE)),
           backgroundColor: BACKGROUND_COLOR,
           elevation: 0,
           centerTitle: true,
           actions: [
+            // ScheduleButton(),        /// readd when revisting notifications
             IconButton(
               icon: LIGHTMODE_ACTIVE ? DARKMODE : LIGHTMODE,
               onPressed: () {
@@ -94,6 +82,7 @@ class _HomePageState extends State<HomePage> {
                   LIGHTMODE_ACTIVE = !LIGHTMODE_ACTIVE;
                   switchColorTheme(LIGHTMODE_ACTIVE);
                 });
+                DATABASE.saveLightMode(LIGHTMODE_ACTIVE);
               },
             ),
           ],
@@ -106,10 +95,10 @@ class _HomePageState extends State<HomePage> {
           child: const Icon(Icons.add),
         ),
         body: ListView.builder(
-            itemCount: goals.length,
+            itemCount: DATABASE.goals.length,
             itemBuilder: (context, index) {
               return GoalTile(
-                  goal: goals[index],
+                  goal: DATABASE.goals[index],
                   delete: (context) => deleteGoal(index),
                   edit: (context) => editGoal(index),
                   checked: index,

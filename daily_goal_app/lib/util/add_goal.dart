@@ -1,9 +1,6 @@
 import 'package:daily_goal_app/util/style.dart';
 import 'package:flutter/material.dart';
-import 'package:daily_goal_app/util/button.dart';
 import 'package:daily_goal_app/util/dropdown.dart';
-import 'package:daily_goal_app/pages/home_page.dart';
-import 'package:daily_goal_app/util/goal_tile.dart';
 
 /// Dialog box pop up UI element for adding a new task
 class DialogBox extends StatelessWidget {
@@ -36,7 +33,7 @@ class DialogBox extends StatelessWidget {
                       enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: TEXT_COLOR)),
                       focusedBorder:  OutlineInputBorder(borderSide: BorderSide(color: TEXT_COLOR)),
                       hintStyle: TextStyle(color: TEXT_COLOR),
-                        border: OutlineInputBorder(),
+                        border: const OutlineInputBorder(),
                         hintText: "Enter new goal"),
                         style: TextStyle(color: TEXT_COLOR),
                         cursorColor: TEXT_COLOR),

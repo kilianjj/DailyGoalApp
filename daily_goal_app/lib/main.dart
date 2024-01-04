@@ -1,16 +1,40 @@
 import 'package:daily_goal_app/pages/home_page.dart';
+import 'package:daily_goal_app/util/style.dart';
 import 'package:flutter/material.dart';
-import 'package:daily_goal_app/util/button.dart';
 import 'package:daily_goal_app/util/database.dart';
+import 'package:hive_flutter/adapters.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:daily_goal_app/util/goal_tile.dart';
+
+/// reimport when revisiting notifications
+// import 'package:timezone/data/latest.dart' as tz;
+// import 'package:timezone/timezone.dart' as tz;
+// import 'package:daily_goal_app/util/notification.dart';
 // import hive
 
-// make async after implementing hive???
-void main() {
-  dummy();
-  for (int i = 0; i < goals.length; i++) {
-    timecheck(i, DateTime.now());
+void main() async {
+  /// notification stuff - leave commented out for now
+  // tz.initializeTimeZones();
+  // NotificationService.initNotification();
+  // print(tz.local.currentTimeZone);
+  // Output information about the local time zone
+
+  /// hive stuff: load existing goals and lightmode
+  await Hive.initFlutter();
+  Hive.registerAdapter(GoalAdapter());
+  Hive.registerAdapter(RepeatFrequencyAdapter());
+  Hive.registerAdapter(StreakStatusAdapter());
+  GoalDatabase.GBOX = await Hive.openBox(GoalDatabase.GOALBOX);
+  GoalDatabase.LBOX = await Hive.openBox(GoalDatabase.LIGHTMODEBOX);
+  LIGHTMODE_ACTIVE = await DATABASE.loadLightMode();
+  await DATABASE.loadLightMode();
+  switchColorTheme(LIGHTMODE_ACTIVE);
+  DATABASE.loadGoals();
+  if (DATABASE.goals.isEmpty) {
+    DATABASE.populateInitialGoal();
   }
-  /// ***** delete me
+  DATABASE.updateStreaks();
+  // /// run app
   runApp(const GoalApp());
 }
 

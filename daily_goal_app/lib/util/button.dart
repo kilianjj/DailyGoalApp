@@ -1,3 +1,5 @@
+// ignore_for_file: no_logic_in_create_state
+
 import 'package:daily_goal_app/util/goal_tile.dart';
 import 'package:daily_goal_app/util/style.dart';
 import 'package:flutter/material.dart';
@@ -11,47 +13,43 @@ const int _minutesPerHour = 60;
 /// returns true if the complete was valid, false otherwise - used to change
 /// button state
 StreakStatus timecheck(int index, DateTime now) {
-  if (goals[index].streak == 0) {
+  if (DATABASE.goals[index].streak == 0) {
     return StreakStatus.noStreak;
   }
-  DateTime last = goals[index].lastComplete;
+  DateTime last = DATABASE.goals[index].lastComplete;
   int difference = now.difference(last).inMinutes;
-  int max;
-  int min;
-  switch (goals[index].frequency) {
+  int limit;
+  switch (DATABASE.goals[index].frequency) {
     case RepeatFrequency.weekly:
-      max = _minutesPerHour * 24 * 7;
-      min = _minutesPerHour * 24 * 7 ~/ 2;
+      limit = _minutesPerHour * 24 * 7;
       break;
     case RepeatFrequency.monthly:
-      max = _minutesPerHour * 24 * 30;
-      min = _minutesPerHour * 24 * 30 ~/ 2;
+      limit = _minutesPerHour * 24 * 30;
       break;
     case RepeatFrequency.yearly:
-      max = _minutesPerHour * 24 * 365;
-      min = _minutesPerHour * 24 * 365 ~/ 2;
+      limit = _minutesPerHour * 24 * 365;
     default:
-      max = _minutesPerHour * 24;
-      min = _minutesPerHour * 24 ~/ 2;
+      limit = _minutesPerHour * 24;
   }
-  if (difference > max) {
-    goals[index].streak = 0;
-    goals[index].status = StreakStatus.noStreak;
+  if (difference <= 0) {
+    return StreakStatus.completed;
+  }
+  if (difference >= limit) {
+    DATABASE.goals[index].streak = 0;
+    DATABASE.goals[index].status = StreakStatus.noStreak;
     return StreakStatus.noStreak;
   }
-  if (difference > min) {
-    goals[index].status = StreakStatus.endingStreak;
-    return StreakStatus.endingStreak;
-  }
-  return StreakStatus.completed;
+  return StreakStatus.endingStreak;
 }
 
 /// complete goal button and related logic
 class CompleteButton extends StatefulWidget {
+  /// index of button/goal in list
   final int checked;
+  // UI update function
   final Function() updater;
 
-  CompleteButton({super.key, required this.checked, required this.updater});
+  const CompleteButton({super.key, required this.checked, required this.updater});
 
   @override
   _CompleteButtonState createState() =>
@@ -71,20 +69,33 @@ class _CompleteButtonState extends State<CompleteButton> {
 
   /// update streak
   void updateStreak(int index, DateTime time) {
-    goals[index].lastComplete = time;
-    goals[index].streak += 1;
-    goals[index].status = StreakStatus.completed;
+    switch (DATABASE.goals[index].frequency) {
+      case RepeatFrequency.weekly:
+        time.add(const Duration(days: 7));
+        break;
+      case RepeatFrequency.monthly:
+        time.add(const Duration(days: 30));
+        break;
+      case RepeatFrequency.yearly:
+        time.add(const Duration(days: 365));
+      default:
+        time.add(const Duration(days: 1));
+    }
+    DATABASE.goals[index].lastComplete = time;
+    DATABASE.goals[index].streak += 1;
+    DATABASE.goals[index].status = StreakStatus.completed;
   }
 
   /// change the button state if applicable and call timecheck logic
   void updateUI() {
     setState(() {
-      if (goals[index].status != StreakStatus.completed) {
+      if (DATABASE.goals[index].status != StreakStatus.completed) {
         DateTime now = DateTime.now();
         if (timecheck(index, now) != StreakStatus.completed) {
           updateStreak(index, now);
           updater();
         }
+        DATABASE.saveGoals();
       }
     });
   }
@@ -93,12 +104,14 @@ class _CompleteButtonState extends State<CompleteButton> {
   Widget buildButtonChild() {
     // Customize the button's appearance based on the current streakStatus value
     // print("$status, $index"); ************ delete after testing
-    switch (goals[index].status) {
+    switch (DATABASE.goals[index].status) {
       case StreakStatus.completed:
         return FLAME_COMPLETE;
       case StreakStatus.endingStreak:
         return FLAME_ENDING;
       case StreakStatus.noStreak:
+        return FLAME_OUT;
+      default:
         return FLAME_OUT;
     }
   }
