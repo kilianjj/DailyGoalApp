@@ -14,3 +14,6 @@ A goal app that features a streak functionality. Goals can have varying duration
 - Togglable lightmode
 - Streak of completing a goal
 - Reminder notification (maybe in the future)
+
+## Demo Screenshot:
+![Alt text](image_url)
