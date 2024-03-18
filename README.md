@@ -16,4 +16,4 @@ A goal app that features a streak functionality. Goals can have varying duration
 - Reminder notification (maybe in the future)
 
 ## Demo Screenshot:
-![Alt text](image_url)
+![Alt text](https://github.com/kilianjj/DailyGoalApp/blob/main/Demo.png)
