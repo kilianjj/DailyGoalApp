@@ -14,7 +14,7 @@ A goal app that features a streak functionality. New goals can be added, existin
 - Togglable lightmode
 - Streak of completing a goal
 
-# Things I might get to at some point:
+## Things I might get to at some point:
 - Notifications
 - Custom goal frequencies
 - Improve UI
