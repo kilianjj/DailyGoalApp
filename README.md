@@ -18,6 +18,7 @@ A goal app that features a streak functionality. New goals can be added, existin
 - Notifications
 - Custom goal frequencies
 - Improve UI
+- Incorporate lists of goals
 
 ## Demo Screenshot:
 ![Alt text](https://github.com/kilianjj/DailyGoalApp/blob/main/Demo.png)
